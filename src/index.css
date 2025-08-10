@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+@theme inline {
+  --font-heading: "DM Sans", sans-serif;
+  --font-body: "Exo 2", sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-body);
+}
