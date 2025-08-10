@@ -1,5 +1,5 @@
 import PageEight from "./PageEight";
-import PageEleven from "./pageEleven";
+import PageEleven from "./PageEleven";
 import PageFive from "./PageFive";
 import PageFour from "./PageFour";
 import PageNine from "./PageNine";
