@@ -127,7 +127,8 @@ const Home = () => {
             {!user.pin ? (
               <button
                 onClick={openPinModal}
-                className="bg-red-500/20 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30 hover:bg-red-500/30 transition-all">
+                className="bg-red-500/20 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30 hover:bg-red-500/30 transition-all"
+              >
                 ACTIVATE PIN
               </button>
             ) : (
@@ -147,7 +148,8 @@ const Home = () => {
             <button
               onClick={closePinModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               <X size={20} />
             </button>
 
@@ -184,13 +186,15 @@ const Home = () => {
               <button
                 onClick={closePinModal}
                 className="flex-1 px-4 py-3 bg-gray-600/50 text-gray-300 rounded-lg hover:bg-gray-600/70 transition-all disabled:opacity-50"
-                disabled={isLoading}>
+                disabled={isLoading}
+              >
                 Cancel
               </button>
               <button
                 onClick={activePinHandler}
                 disabled={isLoading || !pin.trim()}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -209,7 +213,7 @@ const Home = () => {
       <div className="relative px-4 py-6">
         <div className="relative max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
           <div className="relative h-48 md:h-64 lg:h-80">
-            {carouselImages.map((img, index) => (
+            {/*  {carouselImages.map((img, index) => (
               <div
                 key={index}
                 className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -234,15 +238,20 @@ const Home = () => {
                   src={img}
                   alt={`Slide ${index + 1}`}
                   className="w-full h-full object-cover"
-                /> */}
+                /> 
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
-            ))}
+            ))}*/}
+            <img
+              src={"../public/main_image.jpg"}
+              alt={`Slide`}
+              className="w-full h-full"
+            />
           </div>
 
           {/* Carousel Dots */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {/* <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {carouselImages.map((_, index) => (
               <button
                 key={index}
@@ -252,7 +261,7 @@ const Home = () => {
                 }`}
               />
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -264,7 +273,8 @@ const Home = () => {
             onClick={!user.pin ? openPinModal : undefined}
             className={`bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform ${
               !user.pin ? "cursor-pointer" : "cursor-default opacity-50"
-            }`}>
+            }`}
+          >
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-green-500/30 rounded-xl flex items-center justify-center mb-3">
                 <Plus className="text-green-400" size={24} />
