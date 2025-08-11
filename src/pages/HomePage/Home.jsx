@@ -14,9 +14,10 @@ import {
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import Contact from "../BonusPage/Contact";
-import eraglobalLogo from "../../assets/ERA-Globe.png";
+// import eraglobalLogo from "../../assets/ERA-Globe";
 import toast from "react-hot-toast";
 import { activePinService } from "../../apis/userServices";
+import mainImage from "../../assets/main_image.jpg";
 
 const Home = () => {
   const { user, logout } = useAuth();
@@ -244,7 +245,7 @@ const Home = () => {
               </div>
             ))}*/}
             <img
-              src={"../src/assets/main_image.jpg"}
+              src={mainImage}
               alt={`Slide`}
               className="w-full h-full"
             />
