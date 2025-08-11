@@ -244,7 +244,7 @@ const Home = () => {
               </div>
             ))}*/}
             <img
-              src={"../public/main_image.jpg"}
+              src={"../src/assets/main_image.jpg"}
               alt={`Slide`}
               className="w-full h-full"
             />
