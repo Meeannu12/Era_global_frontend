@@ -9,6 +9,9 @@ import {
   X,
   ChevronDown,
   Globe,
+  Edit,
+  Save,
+  DollarSign,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -25,6 +28,9 @@ const Home = () => {
   const [pin, setPin] = useState("");
   const [showPinModal, setShowPinModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showWithDrawModal, setShowWithDrawModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showDepositModal, setShowDepositModal] = useState(false);
 
   const carouselImages = [
     {
@@ -43,6 +49,8 @@ const Home = () => {
       type: "image",
     },
   ];
+
+  // console.log("::", user);
 
   const activePinHandler = async () => {
     if (!pin || pin.trim() === "") {
@@ -88,6 +96,28 @@ const Home = () => {
     }, 4000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleWithDrawClick = () => {
+    setShowWithDrawModal(true);
+    // setIsLoading(false);
+  };
+
+  const handleDepositClick = () => {
+    setShowDepositModal(true);
+    // setIsLoading(false)
+  };
+
+  // withDraw api call here
+  const handelSubmitWithdraw = () => {
+    setShowWithDrawModal(false);
+    setIsLoading(false);
+  };
+
+  // disposit api call here
+  const handelSubmitDiposit = () => {
+    setShowDepositModal(false);
+    setIsLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
@@ -244,11 +274,7 @@ const Home = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
             ))}*/}
-            <img
-              src={mainImage}
-              alt={`Slide`}
-              className="w-full h-full"
-            />
+            <img src={mainImage} alt={`Slide`} className="w-full h-full" />
           </div>
 
           {/* Carousel Dots */}
@@ -289,7 +315,10 @@ const Home = () => {
 
           {/* Withdraw Card */}
           <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
-            <div className="flex flex-col items-center text-center">
+            <div
+              className="flex flex-col items-center text-center"
+              onClick={() => handleWithDrawClick()}
+            >
               <div className="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center mb-3">
                 <ArrowDown className="text-blue-400" size={24} />
               </div>
@@ -311,7 +340,10 @@ const Home = () => {
 
           {/* Deposit Card */}
           <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
-            <div className="flex flex-col items-center text-center">
+            <div
+              className="flex flex-col items-center text-center"
+              onClick={() => handleDepositClick()}
+            >
               <div className="w-12 h-12 bg-purple-500/30 rounded-xl flex items-center justify-center mb-3">
                 <Wallet className="text-purple-400" size={24} />
               </div>
@@ -371,6 +403,196 @@ const Home = () => {
       </div>
 
       <Contact />
+
+      {/* Edit WithDraw Modal */}
+      {showWithDrawModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-6 border-b border-slate-700">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-blue-400" />
+                WithDraw
+              </h2>
+              <button
+                onClick={() => setShowWithDrawModal(false)}
+                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Username
+                </label>
+                {/* <input
+                  type="text"
+                  value={editForm.username}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      username: e.target.value,
+                    }))
+                  }
+                  placeholder={user.username}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                /> */}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Email
+                </label>
+                {/* <input
+                  type="email"
+                  value={editForm.email}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  }
+                  placeholder={user.email}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                /> */}
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowWithDrawModal(false)}
+                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handelSubmitWithdraw()}
+                  disabled={isLoading}
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      Save Changes
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Deposit Modal */}
+      {showDepositModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-6 border-b border-slate-700">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-purple-400" />
+                Deposit
+              </h2>
+              <button
+                onClick={() => setShowDepositModal(false)}
+                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  // value={editForm.username}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({
+                  //     ...prev,
+                  //     username: e.target.value,
+                  //   }))
+                  // }
+                  // placeholder={user.username}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  // value={editForm.email}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  // placeholder={user.email}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  // value={editForm.email}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  // placeholder={user.email}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  // value={editForm.email}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  // placeholder={user.email}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowDepositModal(false)}
+                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handelSubmitDiposit()}
+                  disabled={isLoading}
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-purple-500 to-purplr-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      Save Changes
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer Banner */}
       <footer className="fixed bottom-0 w-full bg-gradient-to-r from-green-600 to-green-700 py-3 backdrop-blur-sm border-t border-green-500/30">
