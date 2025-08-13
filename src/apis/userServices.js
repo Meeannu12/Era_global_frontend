@@ -36,6 +36,33 @@ export const activePinService = async (data) => {
   }
 };
 
+export const addDepositService = async (data) => {
+  try {
+    const response = await AXIOS.post("/api/v1/payment/addDeposit", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addWithdrawService = async (data) => {
+  try {
+    const response = await AXIOS.post("/api/v1/payment/addWithdraw", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPaymentTransactions = async () => {
+  try {
+    const response = await AXIOS.get("/api/v1/payment/getTransactionsByUser");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getUserCount = async ({ sponsorID }) => {
   try {
     const response = await AXIOS.get(`/api/v1/users/${sponsorID}`);

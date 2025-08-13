@@ -19,7 +19,12 @@ import { useAuth } from "../../context/authContext";
 import Contact from "../BonusPage/Contact";
 // import eraglobalLogo from "../../assets/ERA-Globe";
 import toast from "react-hot-toast";
-import { activePinService } from "../../apis/userServices";
+import {
+  activePinService,
+  addDepositService,
+  addWithdrawService,
+  getPaymentTransactions,
+} from "../../apis/userServices";
 import mainImage from "../../assets/main_image.jpg";
 
 const Home = () => {
@@ -29,8 +34,17 @@ const Home = () => {
   const [showPinModal, setShowPinModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showWithDrawModal, setShowWithDrawModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
+  const [error, setError] = useState("");
+  const [transaction, setTransaction] = useState([]);
+
+  // Form states
+  const [editForm, setEditForm] = useState({
+    userID: user.userID || "",
+    walletAddress: user.walletAddress || "",
+    amount: "",
+    receive: "0000000000",
+  });
 
   const carouselImages = [
     {
@@ -81,7 +95,7 @@ const Home = () => {
   };
 
   const openPinModal = () => {
-    setShowPinModal(true); 
+    setShowPinModal(true);
     setPin("");
   };
 
@@ -90,7 +104,14 @@ const Home = () => {
     setPin("");
   };
 
+  const getPayments = async () => {
+    const response = await getPaymentTransactions();
+    // console.log("response", response);
+    setTransaction(response.data);
+  };
+
   useEffect(() => {
+    getPayments();
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
     }, 4000);
@@ -108,15 +129,128 @@ const Home = () => {
   };
 
   // withDraw api call here
-  const handelSubmitWithdraw = () => {
-    setShowWithDrawModal(false);
-    setIsLoading(false);
+  const handelSubmitWithdraw = async () => {
+    const amount = Number(editForm.amount);
+    try {
+      // 1️⃣ Empty or zero check
+      if (!amount) {
+        toast.error("Please enter amount");
+        return;
+      }
+      // ✅ Custom validation check
+      // if (!isValidAmount(amount)) {
+      //   // setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
+      //   toast.error("Amount 20 se bada aur 10 ka multiple hona chahiye");
+      //   return; // Stop function here
+      // }
+      // ✅ check amount grater then wallet amount
+      if (user.wallet <= amount) {
+        toast.error("Not sufficient Balance in Wallet");
+        return;
+      }
+
+      const data = {
+        // userID: editForm.userID,
+        senderWallet: editForm.receive,
+        amount: editForm.amount,
+        receiveWallet: editForm.walletAddress,
+      };
+
+      const response = await addWithdrawService(data);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Failed to send deposit Requist. Please try again later.");
+    } finally {
+      // console.log("api call pass");
+      setEditForm((prev) => ({
+        ...prev, // baaki fields as it is
+        amount: "", // sirf amount reset
+      }));
+      setShowWithDrawModal(false);
+      setIsLoading(false);
+    }
   };
 
   // disposit api call here
-  const handelSubmitDiposit = () => {
+  const handelSubmitDiposit = async () => {
+    const amount = Number(editForm.amount);
+    try {
+      // 1️⃣ Empty or zero check
+      if (!amount) {
+        toast.error("Please enter amount");
+        return;
+      }
+      // ✅ Custom validation check
+      if (!isValidAmount(amount)) {
+        // setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
+        toast.error("Amount 20 se bada aur 10 ka multiple hona chahiye");
+        return; // Stop function here
+      }
+      // if (user.wallet >= amount) {
+      //   toast.error("Not sufficient Balance in Wallet");
+      //   return;
+      // }
+
+      const data = {
+        // userID: editForm.userID,
+        senderWallet: editForm.walletAddress,
+        amount: editForm.amount,
+        receiveWallet: editForm.receive,
+      };
+
+      const response = await addDepositService(data);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Failed to send deposit Requist. Please try again later.");
+    } finally {
+      // console.log("api call pass");
+      setEditForm((prev) => ({
+        ...prev, // baaki fields as it is
+        amount: "", // sirf amount reset
+      }));
+      setShowDepositModal(false);
+      setIsLoading(false);
+    }
+  };
+
+  // check enter amount by user is grater then 19 and multipal of 10
+  function isValidAmount(amount) {
+    return amount > 20 && amount % 10 === 0;
+  }
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setEditForm((prev) => ({ ...prev, amount: e.target.value }));
+
+    if (value && !isValidAmount(Number(value))) {
+      setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
+    } else {
+      setError("");
+    }
+  };
+
+  const handelDepositCancel = (e) => {
+    setEditForm((prev) => ({
+      ...prev, // baaki fields as it is
+      amount: "", // sirf amount reset
+    }));
     setShowDepositModal(false);
-    setIsLoading(false);
+  };
+
+  const handelWithDrawCancel = (e) => {
+    setEditForm((prev) => ({
+      ...prev, // baaki fields as it is
+      amount: "", // sirf amount reset
+    }));
+    setShowWithDrawModal(false);
   };
 
   return (
@@ -395,9 +529,40 @@ const Home = () => {
             </button>
           </div>
           <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
-            <div className="text-center text-gray-400 py-8">
-              <p>No recent transactions</p>
-            </div>
+            {transaction.length === 0 ? (
+              <div className="text-center text-gray-400 py-8">
+                <p>No recent transactions</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full text-sm text-gray-300">
+                  <thead>
+                    <tr className="border-b border-gray-600">
+                      <th className="px-4 py-2 text-left">Amount</th>
+                      <th className="px-4 py-2 text-left">Mode</th>
+                      <th className="px-4 py-2 text-left">Sender Wallet</th>
+                      <th className="px-4 py-2 text-left">Receive Wallet</th>
+                      <th className="px-4 py-2 text-left">Status</th>
+                      <th className="px-4 py-2 text-left">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transaction.map((tx) => (
+                      <tr key={tx._id} className="border-b border-gray-700">
+                        <td className="px-4 py-2 ">{tx.amount}</td>
+                        <td className="px-4 py-2">{tx.mode}</td>
+                        <td className="px-4 py-2">{tx.senderWallet}</td>
+                        <td className="px-4 py-2">{tx.receiveWallet}</td>
+                        <td className="px-4 py-2">{tx.verficationStatus}</td>
+                        <td className="px-4 py-2">
+                          {new Date(tx.createdAt).toLocaleString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -414,7 +579,7 @@ const Home = () => {
                 WithDraw
               </h2>
               <button
-                onClick={() => setShowWithDrawModal(false)}
+                onClick={handelWithDrawCancel}
                 className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
               >
                 <X className="w-4 h-4 text-white" />
@@ -423,42 +588,77 @@ const Home = () => {
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Username
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  User ID
                 </label>
-                {/* <input
+                <input
                   type="text"
-                  value={editForm.username}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({
-                      ...prev,
-                      username: e.target.value,
-                    }))
-                  }
-                  placeholder={user.username}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
-                /> */}
+                  value={user.userID}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({
+                  //     ...prev,
+                  //     username: e.target.value,
+                  //   }))
+                  // }
+                  placeholder={user.userID}
+                  disabled={true}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Email
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Sender
                 </label>
-                {/* <input
-                  type="email"
-                  value={editForm.email}
+                <input
+                  type="text"
+                  value={editForm.receive}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  placeholder={editForm.receive}
+                  disabled={true}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  value={editForm.amount}
+                  // onChange={handleChange}
                   onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                    setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   }
-                  placeholder={user.email}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
-                /> */}
+                  placeholder={"Enter amount grater then 19"}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Reciever
+                </label>
+                <input
+                  type="email"
+                  value={user.walletAddress}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  placeholder={user.walletAddress}
+                  disabled={true}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
               </div>
 
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowWithDrawModal(false)}
+                  onClick={handelWithDrawCancel}
                   className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
                 >
                   Cancel
@@ -474,7 +674,7 @@ const Home = () => {
                   ) : (
                     <>
                       <Save className="w-4 h-4" />
-                      Save Changes
+                      Withdraw Amount
                     </>
                   )}
                 </button>
@@ -484,7 +684,7 @@ const Home = () => {
         </div>
       )}
 
-      {/* Edit Deposit Modal */}
+      {/* Amount Deposit Modal */}
       {showDepositModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
@@ -494,7 +694,7 @@ const Home = () => {
                 Deposit
               </h2>
               <button
-                onClick={() => setShowDepositModal(false)}
+                onClick={handelDepositCancel}
                 className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
               >
                 <X className="w-4 h-4 text-white" />
@@ -504,63 +704,68 @@ const Home = () => {
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Username
+                  User ID
                 </label>
                 <input
                   type="text"
-                  // value={editForm.username}
+                  value={user.userID}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({
                   //     ...prev,
                   //     username: e.target.value,
                   //   }))
                   // }
-                  // placeholder={user.username}
+                  placeholder={user.userID}
+                  disabled={true}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Email
+                  Sender
                 </label>
                 <input
-                  type="email"
-                  // value={editForm.email}
+                  type="text"
+                  value={user.walletAddress}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
                   // }
-                  // placeholder={user.email}
+                  placeholder={user.walletAddress}
+                  disabled={true}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Email
+                  Amount
                 </label>
                 <input
-                  type="email"
-                  // value={editForm.email}
+                  type="number"
+                  value={editForm.amount}
+                  onChange={handleChange}
                   // onChange={(e) =>
-                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  //   setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   // }
-                  // placeholder={user.email}
+                  placeholder={"Enter amount grater then 19"}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Email
+                  Reciever
                 </label>
                 <input
-                  type="email"
-                  // value={editForm.email}
+                  type="text"
+                  value={editForm.receive}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
                   // }
-                  // placeholder={user.email}
+                  placeholder={editForm.receive}
+                  disabled={true}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
@@ -568,7 +773,7 @@ const Home = () => {
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowDepositModal(false)}
+                  onClick={handelDepositCancel}
                   className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
                 >
                   Cancel
@@ -584,7 +789,7 @@ const Home = () => {
                   ) : (
                     <>
                       <Save className="w-4 h-4" />
-                      Save Changes
+                      Deposit Request
                     </>
                   )}
                 </button>

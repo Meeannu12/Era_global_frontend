@@ -147,7 +147,7 @@ const Profile = () => {
       }
     } catch (error) {
       toast.error("Failed to fetch pins. Please try again later.");
-      setError(error);
+      // setError(error);
     } finally {
       setLoading(false);
       setShowWalletAddressModal(false);
