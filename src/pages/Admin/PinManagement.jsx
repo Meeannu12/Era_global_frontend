@@ -12,9 +12,17 @@ import {
   KeyIcon,
   FileDownIcon,
   X,
+  DollarSign,
 } from "lucide-react";
 import jsPDF from "jspdf";
 import apiService from "../../apis/pinManageServices";
+import {
+  getDepositTransactionService,
+  getPaymentTransactions,
+  getWithdrawTransactionService,
+  updatePaymentStatus,
+} from "../../apis/userServices";
+import toast from "react-hot-toast";
 
 const PinManagement = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -22,6 +30,8 @@ const PinManagement = () => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [withdrawTransaction, setWithdrawTransaction] = useState([]);
+  const [depositTransaction, setDepositTransaction] = useState([]);
   const HARD_CODED_USERNAME = "ERA-264363299U";
   const HARD_CODED_PASSWORD = "ADMIN768264ERA";
 
@@ -54,7 +64,21 @@ const PinManagement = () => {
 
   // API functions
 
+  const getwithDrawPayments = async () => {
+    const response = await getWithdrawTransactionService();
+    console.log("response", response);
+    setWithdrawTransaction(response.data);
+  };
+
+  const getDepositPayments = async () => {
+    const response = await getDepositTransactionService();
+    console.log("response", response);
+    setDepositTransaction(response.data);
+  };
+
   useEffect(() => {
+    getwithDrawPayments();
+    getDepositPayments();
     fetchStats();
   }, []);
 
@@ -316,6 +340,35 @@ const PinManagement = () => {
     setActiveTab(id);
   };
 
+  const handelUpdateStatus = async (id, status, method) => {
+    try {
+      const data = {
+        id,
+        status,
+      };
+      const response = await updatePaymentStatus(data);
+      if (response.success) {
+        toast.success(response.message);
+        // ✅ Remove from state
+
+        if (method == "deposit") {
+          setDepositTransaction((prev) =>
+            prev.filter((item) => item._id !== id)
+          );
+        } else {
+          setWithdrawTransaction((prev) =>
+            prev.filter((item) => item._id !== id)
+          );
+        }
+      } else {
+        toast.error("Internal Server Error");
+      }
+    } catch (error) {
+      toast.error("Error fetching stats: " + error.message);
+      console.error("Error fetching stats:", error);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === "unused") {
       fetchUnusedPins(1);
@@ -345,7 +398,8 @@ const PinManagement = () => {
               message.includes("already used")
                 ? "bg-red-100 text-red-800 border border-red-200"
                 : "bg-green-100 text-green-800 border border-green-200"
-            }`}>
+            }`}
+          >
             {message.includes("Error") ||
             message.includes("Failed") ||
             message.includes("not found") ||
@@ -357,7 +411,8 @@ const PinManagement = () => {
             {message}
             <button
               onClick={() => setMessage("")}
-              className="ml-auto text-lg font-bold">
+              className="ml-auto text-lg font-bold"
+            >
               ×
             </button>
           </div>
@@ -440,16 +495,27 @@ const PinManagement = () => {
                 label: "Forget Password",
                 icon: FileDownIcon,
               },
+              {
+                id: "withdraw",
+                label: "WithDraw Request",
+                icon: DollarSign,
+              },
+              {
+                id: "deposit",
+                label: "Deposit Request",
+                icon: DollarSign,
+              },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => handleTabClick(id)}
-                className={`flex items-center rounded-2xl gap-2 px-4 py-2 m-2 font-medium transition-colors ${
+                className={`flex items-center rounded-2xl gap-1 px-2 py-2 m-1 font-medium transition-colors ${
                   activeTab === id
                     ? "text-blue-600 border-2 bg-blue-500/10 border-blue-600"
                     : "text-gray-600 hover:text-gray-800"
-                }`}>
-                <Icon size={20} />
+                }`}
+              >
+                <Icon size={17} />
                 {label}
               </button>
             ))}
@@ -494,7 +560,8 @@ const PinManagement = () => {
                 <button
                   onClick={handleGeneratePins}
                   disabled={loading || !authCode.trim()}
-                  className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
                   {loading ? (
                     <RefreshCw className="animate-spin" size={20} />
                   ) : (
@@ -550,7 +617,8 @@ const PinManagement = () => {
                       setLoginUsername("");
                       setLoginPassword("");
                       setLoginError("");
-                    }}>
+                    }}
+                  >
                     <X className="w-6 h-6 text-gray-600" />
                   </button>
                   <h2 className="text-xl font-bold mb-4 text-center">
@@ -593,7 +661,8 @@ const PinManagement = () => {
                         setLoginError("Invalid credentials. Try again.");
                       }
                     }}
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                  >
                     Login
                   </button>
                 </div>
@@ -612,7 +681,8 @@ const PinManagement = () => {
                       <select
                         value={limit}
                         onChange={(e) => setLimit(parseInt(e.target.value))}
-                        className="px-3 py-2 border border-gray-300 rounded-lg text-white bg-gray-700 focus:ring-2 focus:ring-blue-500">
+                        className="px-3 py-2 border border-gray-300 rounded-lg text-white bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                      >
                         <option value={50}>50</option>
                         <option value={100}>100</option>
                         <option value={200}>200</option>
@@ -629,7 +699,8 @@ const PinManagement = () => {
                     <button
                       onClick={downloadCurrentPagePDF}
                       disabled={unusedPins.length === 0}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2">
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
+                    >
                       <Download size={20} />
                       Download Page
                     </button>
@@ -654,13 +725,15 @@ const PinManagement = () => {
                         <button
                           onClick={() => fetchUnusedPins(currentPage - 1)}
                           disabled={currentPage <= 1}
-                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50">
+                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50"
+                        >
                           Previous
                         </button>
                         <button
                           onClick={() => fetchUnusedPins(currentPage + 1)}
                           disabled={currentPage >= totalPages}
-                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50">
+                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50"
+                        >
                           Next
                         </button>
                       </div>
@@ -669,7 +742,8 @@ const PinManagement = () => {
                       {unusedPins.map((pin, index) => (
                         <div
                           key={index}
-                          className="bg-gray-50 p-3 rounded-lg text-black font-mono text-center hover:bg-gray-100 transition-colors">
+                          className="bg-gray-50 p-3 rounded-lg text-black font-mono text-center hover:bg-gray-100 transition-colors"
+                        >
                           {pin}
                         </div>
                       ))}
@@ -722,7 +796,8 @@ const PinManagement = () => {
                 <button
                   onClick={handleAssignPinToSponsorID}
                   disabled={loading || !sponsorID.trim()}
-                  className="w-full md:w-auto px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  className="w-full md:w-auto px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
                   {loading ? (
                     <RefreshCw className="animate-spin" size={20} />
                   ) : (
@@ -790,7 +865,8 @@ const PinManagement = () => {
                     !phoneNumber.trim() ||
                     !newPassword.trim()
                   }
-                  className="w-full md:w-auto px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  className="w-full md:w-auto px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
                   {loading ? (
                     <RefreshCw className="animate-spin" size={20} />
                   ) : (
@@ -798,6 +874,158 @@ const PinManagement = () => {
                   )}
                   Reset Password
                 </button>
+              </div>
+            )}
+
+            {/* Withdraw Status  Tab */}
+            {activeTab === "withdraw" && (
+              <div className="space-y-6">
+                {/* <div className="bg-gray-800 border border-gray-600 rounded-2xl p-6"> */}
+                {withdrawTransaction.length === 0 ? (
+                  <div className="text-center text-gray-400 py-8">
+                    <p>No recent transactions</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="table-auto w-full text-sm text-black">
+                      <thead>
+                        <tr className="border-b border-gray-600">
+                          <th className="px-4 py-2">Amount</th>
+                          <th className="px-4 py-2">Mode</th>
+                          <th className="px-4 py-2">Sender Wallet</th>
+                          <th className="px-4 py-2">Receive Wallet</th>
+                          <th className="px-4 py-2">Status</th>
+                          <th className="px-4 py-2">Date</th>
+                          <th className="px-4 py-2 text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {withdrawTransaction.map((tx) => (
+                          <tr key={tx._id} className="border-b border-gray-700">
+                            <td className="px-4 py-2 text-center">
+                              {tx.amount}
+                            </td>
+                            <td className="px-4 py-2 text-center">{tx.mode}</td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.senderWallet}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.receiveWallet}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.verficationStatus}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {new Date(tx.createdAt).toLocaleString()}
+                            </td>
+                            <td className="px-4 py-2 flex gap-2 justify-center">
+                              <button
+                                onClick={() =>
+                                  handelUpdateStatus(
+                                    tx._id,
+                                    "Verified",
+                                    "Withdraw"
+                                  )
+                                }
+                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                              >
+                                Verify
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handelUpdateStatus(
+                                    tx._id,
+                                    "Rejected",
+                                    "Withdraw"
+                                  )
+                                }
+                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                              >
+                                Reject
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+              // </div>
+            )}
+
+            {/* deposit Status  Tab */}
+            {activeTab === "deposit" && (
+              <div className="space-y-6">
+                {depositTransaction.length === 0 ? (
+                  <div className="text-center text-gray-400 py-8">
+                    <p>No recent transactions</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="table-auto w-full text-sm text-black">
+                      <thead>
+                        <tr className="border-b border-gray-600">
+                          <th className="px-4 py-2">Amount</th>
+                          <th className="px-4 py-2">Mode</th>
+                          <th className="px-4 py-2">Sender Wallet</th>
+                          <th className="px-4 py-2">Receive Wallet</th>
+                          <th className="px-4 py-2">Status</th>
+                          <th className="px-4 py-2">Date</th>
+                          <th className="px-4 py-2 text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {depositTransaction.map((tx) => (
+                          <tr key={tx._id} className="border-b border-gray-700">
+                            <td className="px-4 py-2 text-center">
+                              {tx.amount}
+                            </td>
+                            <td className="px-4 py-2 text-center">{tx.mode}</td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.senderWallet}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.receiveWallet}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {tx.verficationStatus}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {new Date(tx.createdAt).toLocaleString()}
+                            </td>
+                            <td className="px-4 py-2 flex gap-2 justify-center">
+                              <button
+                                onClick={() =>
+                                  handelUpdateStatus(
+                                    tx._id,
+                                    "Verified",
+                                    "deposit"
+                                  )
+                                }
+                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                              >
+                                Verify
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handelUpdateStatus(
+                                    tx._id,
+                                    "Rejected",
+                                    "deposit"
+                                  )
+                                }
+                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                              >
+                                Reject
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
           </div>

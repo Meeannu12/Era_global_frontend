@@ -54,6 +54,42 @@ export const addWithdrawService = async (data) => {
   }
 };
 
+export const getWithdrawTransactionService = async (data) => {
+  try {
+    const response = await AXIOS.get(
+      "/api/v1/payment/getWithdrawalTransaction",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePaymentStatus = async (data) => {
+  try {
+    const response = await AXIOS.post(
+      `/api/v1/payment/updatePaymentStatus/${data.id}`,
+      { status: data.status }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getDepositTransactionService = async (data) => {
+  try {
+    const response = await AXIOS.get(
+      "/api/v1/payment/getDepositTransaction",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPaymentTransactions = async () => {
   try {
     const response = await AXIOS.get("/api/v1/payment/getTransactionsByUser");
