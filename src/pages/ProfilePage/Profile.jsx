@@ -141,8 +141,7 @@ const Profile = () => {
 
       if (response.success) {
         toast.success(response.message);
-        setUser(response.user)
-        setEditForm({ walletAddress: "" });
+        setUser(response.user);
       } else {
         toast.error(data.message || "Failed to update profile");
       }
@@ -152,6 +151,7 @@ const Profile = () => {
     } finally {
       setLoading(false);
       setShowWalletAddressModal(false);
+      setEditForm({ walletAddress: "" });
     }
   };
 
@@ -233,6 +233,11 @@ const Profile = () => {
       borderColor: "border-pink-500/20",
     },
   ];
+
+  const handelCancelPopUp = () => {
+    setShowWalletAddressModal(false);
+    setEditForm({ walletAddress: "" });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 p-3 sm:p-6">
@@ -464,7 +469,7 @@ const Profile = () => {
                 Wallet Address
               </h2>
               <button
-                onClick={() => setShowWalletAddressModal(false)}
+                onClick={handelCancelPopUp}
                 className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
               >
                 <X className="w-4 h-4 text-white" />
@@ -490,25 +495,10 @@ const Profile = () => {
                 />
               </div>
 
-              {/* <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
-                  }
-                  placeholder={user.email}
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
-                />
-              </div> */}
-
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowWalletAddressModal(false)}
+                  onClick={handelCancelPopUp}
                   className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
                 >
                   Cancel
