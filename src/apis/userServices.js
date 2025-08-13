@@ -68,3 +68,12 @@ export const getAllUserSponsorBySponsorID = async ({
     throw error;
   }
 };
+
+export const walletAddress = async (data) => {
+  try {
+    const response = await AXIOS.post("/api/v1/users/addWalletAddress", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

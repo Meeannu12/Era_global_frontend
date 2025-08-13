@@ -81,7 +81,7 @@ const Home = () => {
   };
 
   const openPinModal = () => {
-    setShowPinModal(true);
+    setShowPinModal(true); 
     setPin("");
   };
 

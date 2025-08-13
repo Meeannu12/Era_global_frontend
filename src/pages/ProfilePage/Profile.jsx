@@ -22,7 +22,11 @@ import {
   PinIcon,
 } from "lucide-react";
 import React, { useState } from "react";
-import { changePassword, editUserProfile } from "../../apis/userServices";
+import {
+  changePassword,
+  editUserProfile,
+  walletAddress,
+} from "../../apis/userServices";
 import { useAuth } from "../../context/authContext";
 import Contact from "../BonusPage/Contact";
 import toast from "react-hot-toast";
@@ -33,13 +37,15 @@ const Profile = () => {
   const [expandedMenu, setExpandedMenu] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showWalletAddressModal, setShowWalletAddressModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   // Form states
   const [editForm, setEditForm] = useState({
     username: user.username || "",
     email: user.email || "",
+    walletAddress: user.walletAddress || "",
   });
 
   const [passwordForm, setPasswordForm] = useState({
@@ -124,6 +130,31 @@ const Profile = () => {
     }
   };
 
+  const sendWalletAddress = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      // const response = await AXIOS.get(`/api/v1/users/${user.sponsorID}`);
+      const response = await walletAddress({
+        walletAddress: editForm.walletAddress || user.walletAddress,
+      });
+
+      if (response.success) {
+        toast.success(response.message);
+        setUser(response.user)
+        setEditForm({ walletAddress: "" });
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Failed to fetch pins. Please try again later.");
+      setError(error);
+    } finally {
+      setLoading(false);
+      setShowWalletAddressModal(false);
+    }
+  };
+
   const handleMenuClick = (index) => {
     if (index === 0) {
       // General Settings - Edit Profile
@@ -132,7 +163,10 @@ const Profile = () => {
         email: user.email || "",
       });
       setShowEditModal(true);
-    } else if (index === 2) {
+    } else if (index === 1) {
+      // update Wallet Address
+      setShowWalletAddressModal(true);
+    } else {
       // Change Password
       setShowPasswordModal(true);
     }
@@ -231,7 +265,8 @@ const Profile = () => {
                 </h1>
                 <button
                   onClick={copyUserId}
-                  className="p-1.5 sm:p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-all duration-200 group">
+                  className="p-1.5 sm:p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-all duration-200 group"
+                >
                   {copiedId ? (
                     <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
                   ) : (
@@ -256,10 +291,12 @@ const Profile = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="group bg-slate-800/40 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-700/50 p-2 sm:p-5 hover:border-slate-600/50 transition-all duration-300 hover:transform hover:-translate-y-1">
+                className="group bg-slate-800/40 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-700/50 p-2 sm:p-5 hover:border-slate-600/50 transition-all duration-300 hover:transform hover:-translate-y-1"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div
-                    className={`p-2 sm:p-3 rounded-lg sm:rounded-xl ${stat.bgColor} ${stat.iconColor} border ${stat.borderColor} mb-2 sm:mb-3`}>
+                    className={`p-2 sm:p-3 rounded-lg sm:rounded-xl ${stat.bgColor} ${stat.iconColor} border ${stat.borderColor} mb-2 sm:mb-3`}
+                  >
                     {stat.icon}
                   </div>
                   <h3 className="text-lg sm:text-3xl font-bold text-white mb-1 group-hover:text-purple-200 transition-colors duration-300">
@@ -270,7 +307,8 @@ const Profile = () => {
                   </p>
                   <div className="mt-2 sm:mt-3 w-full bg-slate-700/30 rounded-full h-0.5 sm:h-1">
                     <div
-                      className={`h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} rounded-full w-0 group-hover:w-3 transition-all duration-500`}></div>
+                      className={`h-0.5 sm:h-1 bg-gradient-to-r ${stat.gradient} rounded-full w-0 group-hover:w-3 transition-all duration-500`}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -284,7 +322,8 @@ const Profile = () => {
           <div className="flex items-center justify-between p-4 sm:p-6">
             <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
               <div
-                className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border  shadow-lg group-hover:scale-110 transition-all duration-300 flex-shrink-0`}>
+                className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border  shadow-lg group-hover:scale-110 transition-all duration-300 flex-shrink-0`}
+              >
                 <PinIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0 flex-1">
@@ -309,11 +348,13 @@ const Profile = () => {
           <div
             key={index}
             className="group bg-slate-800/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50"
-            onClick={() => handleMenuClick(index)}>
+            onClick={() => handleMenuClick(index)}
+          >
             <div className="flex items-center justify-between p-4 sm:p-6">
               <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
                 <div
-                  className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${item.bgColor} ${item.iconColor} border ${item.borderColor} shadow-lg group-hover:scale-110 transition-all duration-300 flex-shrink-0`}>
+                  className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${item.bgColor} ${item.iconColor} border ${item.borderColor} shadow-lg group-hover:scale-110 transition-all duration-300 flex-shrink-0`}
+                >
                   {item.icon}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -344,7 +385,8 @@ const Profile = () => {
               </h2>
               <button
                 onClick={() => setShowEditModal(false)}
-                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors">
+                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+              >
                 <X className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -387,14 +429,96 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors">
+                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
+                >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleEditProfile}
                   disabled={loading}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {loading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      Save Changes
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Wallet Address Modal */}
+      {showWalletAddressModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-6 border-b border-slate-700">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Hash className="w-5 h-5 text-emerald-400" />
+                Wallet Address
+              </h2>
+              <button
+                onClick={() => setShowWalletAddressModal(false)}
+                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Wallet Address
+                </label>
+                <input
+                  type="text"
+                  value={editForm.walletAddress}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      walletAddress: e.target.value,
+                    }))
+                  }
+                  placeholder={user?.walletAddress}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+              {/* <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={editForm.email}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  }
+                  placeholder={user.email}
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div> */}
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowWalletAddressModal(false)}
+                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={sendWalletAddress}
+                  disabled={loading}
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   ) : (
@@ -421,7 +545,8 @@ const Profile = () => {
               </h2>
               <button
                 onClick={() => setShowPasswordModal(false)}
-                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors">
+                className="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors"
+              >
                 <X className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -447,7 +572,8 @@ const Profile = () => {
                   <button
                     type="button"
                     onClick={() => togglePasswordVisibility("old")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white">
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
                     {showPasswords.old ? (
                       <EyeOff className="w-5 h-5" />
                     ) : (
@@ -478,7 +604,8 @@ const Profile = () => {
                   <button
                     type="button"
                     onClick={() => togglePasswordVisibility("new")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white">
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
                     {showPasswords.new ? (
                       <EyeOff className="w-5 h-5" />
                     ) : (
@@ -508,7 +635,8 @@ const Profile = () => {
                   <button
                     type="button"
                     onClick={() => togglePasswordVisibility("confirm")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white">
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
                     {showPasswords.confirm ? (
                       <EyeOff className="w-5 h-5" />
                     ) : (
@@ -522,13 +650,15 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setShowPasswordModal(false)}
-                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors">
+                  className="flex-1 py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors"
+                >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   ) : (
