@@ -40,7 +40,7 @@ const Home = () => {
 
   // Form states
   const [editForm, setEditForm] = useState({
-    userID: user.userID || "",
+    userID: user.sponsorID || "",
     walletAddress: user.walletAddress || "",
     amount: "",
     receive: "0000000000",
@@ -150,7 +150,7 @@ const Home = () => {
       }
 
       const data = {
-        // userID: editForm.userID,
+        sponsorID: editForm.userID,
         senderWallet: editForm.receive,
         amount: editForm.amount,
         receiveWallet: editForm.walletAddress,
@@ -196,7 +196,7 @@ const Home = () => {
       // }
 
       const data = {
-        // userID: editForm.userID,
+        sponsorID: editForm.userID,
         senderWallet: editForm.walletAddress,
         amount: editForm.amount,
         receiveWallet: editForm.receive,
@@ -593,7 +593,7 @@ const Home = () => {
                 </label>
                 <input
                   type="text"
-                  value={user.userID}
+                  value={user.sponsorID}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({
                   //     ...prev,
@@ -708,7 +708,7 @@ const Home = () => {
                 </label>
                 <input
                   type="text"
-                  value={user.userID}
+                  value={user.sponsorID}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({
                   //     ...prev,
