@@ -490,14 +490,14 @@ const Home = () => {
 
       {/* Balance Cards */}
       <div className="px-4 mb-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Earnings Card */}
           <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-red-300 text-sm font-medium mb-2">
               Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              ${user.pin ? 5.0 : 0.0}
+              {/* ${user.pin ? 5.0 : 0.0} */}${user.wallet}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
@@ -512,6 +512,17 @@ const Home = () => {
             <p className="text-white text-3xl font-bold">0.0</p>
             <div className="mt-3 h-1 bg-green-500/30 rounded-full">
               <div className="h-full bg-green-500 rounded-full w-4/5"></div>
+            </div>
+          </div>
+
+          {/* Today Earning card */}
+          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
+            <h3 className="text-purple-300 text-sm font-medium mb-2">
+              Today (USDT)
+            </h3>
+            <p className="text-white text-3xl font-bold">0.0</p>
+            <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
+              <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
             </div>
           </div>
         </div>
