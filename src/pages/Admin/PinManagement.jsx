@@ -345,6 +345,7 @@ const PinManagement = () => {
       const data = {
         id,
         status,
+        method,
       };
       const response = await updatePaymentStatus(data);
       if (response.success) {
@@ -890,35 +891,37 @@ const PinManagement = () => {
                     <table className="table-auto w-full text-sm text-black">
                       <thead>
                         <tr className="border-b border-gray-600">
-                          <th className="px-4 py-2">Amount</th>
-                          <th className="px-4 py-2">Mode</th>
-                          <th className="px-4 py-2">Sender Wallet</th>
-                          <th className="px-4 py-2">Receive Wallet</th>
-                          <th className="px-4 py-2">Status</th>
-                          <th className="px-4 py-2">Date</th>
-                          <th className="px-4 py-2 text-center">Actions</th>
+                          <th className="px-1 py-1">Amount</th>
+                          <th className="px-1 py-1">Mode</th>
+                          <th className="px-1 py-1">sponsorID</th>
+                          <th className="px-1 py-1">Sender Wallet</th>
+                          <th className="px-1 py-1">Receive Wallet</th>
+                          <th className="px-1 py-1">Status</th>
+                          <th className="px-1 py-1">Date</th>
+                          <th className="px-1 py-1 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {withdrawTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.amount}
                             </td>
-                            <td className="px-4 py-2 text-center">{tx.mode}</td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">{tx.mode}</td>
+                            <td className="px-1 py-1 text-center">{tx.sponsorID}</td>
+                            <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.receiveWallet}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.verficationStatus}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {new Date(tx.createdAt).toLocaleString()}
                             </td>
-                            <td className="px-4 py-2 flex gap-2 justify-center">
+                            <td className="px-1 py-1 flex gap-2 justify-center">
                               <button
                                 onClick={() =>
                                   handelUpdateStatus(
@@ -966,35 +969,37 @@ const PinManagement = () => {
                     <table className="table-auto w-full text-sm text-black">
                       <thead>
                         <tr className="border-b border-gray-600">
-                          <th className="px-4 py-2">Amount</th>
-                          <th className="px-4 py-2">Mode</th>
-                          <th className="px-4 py-2">Sender Wallet</th>
-                          <th className="px-4 py-2">Receive Wallet</th>
-                          <th className="px-4 py-2">Status</th>
-                          <th className="px-4 py-2">Date</th>
-                          <th className="px-4 py-2 text-center">Actions</th>
+                          <th className="px-1 py-1">Amount</th>
+                          <th className="px-1 py-1">Mode</th>
+                          <th className="px-1 py-1">sponsorID</th>
+                          <th className="px-1 py-1">Sender Wallet</th>
+                          <th className="px-1 py-1">Receive Wallet</th>
+                          <th className="px-1 py-1">Status</th>
+                          <th className="px-1 py-1">Date</th>
+                          <th className="px-1 py-1 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {depositTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.amount}
                             </td>
-                            <td className="px-4 py-2 text-center">{tx.mode}</td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">{tx.mode}</td>
+                            <td className="px-1 py-1 text-center">{tx.sponsorID}</td>
+                            <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.receiveWallet}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {tx.verficationStatus}
                             </td>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-1 py-1 text-center">
                               {new Date(tx.createdAt).toLocaleString()}
                             </td>
-                            <td className="px-4 py-2 flex gap-2 justify-center">
+                            <td className="px-1 py-1 flex gap-2 justify-center">
                               <button
                                 onClick={() =>
                                   handelUpdateStatus(

@@ -70,7 +70,7 @@ export const updatePaymentStatus = async (data) => {
   try {
     const response = await AXIOS.post(
       `/api/v1/payment/updatePaymentStatus/${data.id}`,
-      { status: data.status }
+      { status: data.status, method: data.method }
     );
     return response.data;
   } catch (error) {

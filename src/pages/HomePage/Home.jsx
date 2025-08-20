@@ -144,7 +144,13 @@ const Home = () => {
       //   return; // Stop function here
       // }
       // ✅ check amount grater then wallet amount
-      if (user.wallet <= amount) {
+
+      if (amount < 10) {
+        toast.error("minimum Withdrawal Limit 10");
+        return;
+      }
+
+      if (user.walletTeamEarn <= amount) {
         toast.error("Not sufficient Balance in Wallet");
         return;
       }
@@ -159,6 +165,7 @@ const Home = () => {
       const response = await addWithdrawService(data);
       if (response.success) {
         toast.success(response.message);
+        getPayments();
       } else {
         toast.error(data.message || "Failed to update profile");
       }
@@ -205,6 +212,7 @@ const Home = () => {
       const response = await addDepositService(data);
       if (response.success) {
         toast.success(response.message);
+        getPayments();
       } else {
         toast.error(data.message || "Failed to update profile");
       }
@@ -222,8 +230,13 @@ const Home = () => {
   };
 
   // check enter amount by user is grater then 19 and multipal of 10
+  // function isValidWithDrawAmount(amount) {
+  //   return amount > 10;
+  // }
+
+  // check enter amount by user is grater then 19 and multipal of 10
   function isValidAmount(amount) {
-    return amount > 20 && amount % 10 === 0;
+    return amount > 19 && amount % 10 === 0;
   }
 
   const handleChange = (e) => {
@@ -231,7 +244,7 @@ const Home = () => {
     setEditForm((prev) => ({ ...prev, amount: e.target.value }));
 
     if (value && !isValidAmount(Number(value))) {
-      setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
+      setError("Please Enter more than 20 and also divisible by 10.");
     } else {
       setError("");
     }
@@ -497,7 +510,7 @@ const Home = () => {
               Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              {/* ${user.pin ? 5.0 : 0.0} */}${user.wallet}
+              $ {user.walletTeamEarn.toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
@@ -509,7 +522,9 @@ const Home = () => {
             <h3 className="text-green-300 text-sm font-medium mb-2">
               Assets (USDT)
             </h3>
-            <p className="text-white text-3xl font-bold">0.0</p>
+            <p className="text-white text-3xl font-bold">
+              $ {user.walletDeposit}
+            </p>
             <div className="mt-3 h-1 bg-green-500/30 rounded-full">
               <div className="h-full bg-green-500 rounded-full w-4/5"></div>
             </div>
@@ -558,18 +573,20 @@ const Home = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {transaction.map((tx) => (
-                      <tr key={tx._id} className="border-b border-gray-700">
-                        <td className="px-4 py-2 ">{tx.amount}</td>
-                        <td className="px-4 py-2">{tx.mode}</td>
-                        <td className="px-4 py-2">{tx.senderWallet}</td>
-                        <td className="px-4 py-2">{tx.receiveWallet}</td>
-                        <td className="px-4 py-2">{tx.verficationStatus}</td>
-                        <td className="px-4 py-2">
-                          {new Date(tx.createdAt).toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
+                    {transaction
+                      .slice(-5) // ye last 7 items lega, agar 7 se kam ho to jitne hain utne hi
+                      .map((tx) => (
+                        <tr key={tx._id} className="border-b border-gray-700">
+                          <td className="px-4 py-2 ">{tx.amount}</td>
+                          <td className="px-4 py-2">{tx.mode}</td>
+                          <td className="px-4 py-2">{tx.senderWallet}</td>
+                          <td className="px-4 py-2">{tx.receiveWallet}</td>
+                          <td className="px-4 py-2">{tx.verficationStatus}</td>
+                          <td className="px-4 py-2">
+                            {new Date(tx.createdAt).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -644,7 +661,7 @@ const Home = () => {
                   onChange={(e) =>
                     setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   }
-                  placeholder={"Enter amount grater then 19"}
+                  placeholder={"Enter amount Greater than 19"}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -759,7 +776,7 @@ const Home = () => {
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   // }
-                  placeholder={"Enter amount grater then 19"}
+                  placeholder={"Enter amount Greater than 19"}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
