@@ -26,6 +26,7 @@ import {
   getPaymentTransactions,
 } from "../../apis/userServices";
 import mainImage from "../../assets/main_image.jpg";
+import CountdownBanner from "../../components/CountdownBanner";
 
 const Home = () => {
   const { user, logout } = useAuth();
@@ -230,13 +231,8 @@ const Home = () => {
   };
 
   // check enter amount by user is grater then 19 and multipal of 10
-  // function isValidWithDrawAmount(amount) {
-  //   return amount > 10;
-  // }
-
-  // check enter amount by user is grater then 19 and multipal of 10
   function isValidAmount(amount) {
-    return amount > 19 && amount % 10 === 0;
+    return amount > 14 && amount % 5 === 0;
   }
 
   const handleChange = (e) => {
@@ -421,7 +417,14 @@ const Home = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
             ))}*/}
-            <img src={mainImage} alt={`Slide`} className="w-full h-full" />
+            <h1 className="text-2xl sm:text-2xl md:text-2xl lg:text-6xl font-bold text-center p-2">
+              From Vision to Reality in{" "}
+            </h1>
+            <CountdownBanner targetDate="2025-08-22T00:00:00" />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center p-2">
+              With Innovation & Integrity
+            </h1>
+            {/* <img src={mainImage} alt={`Slide`} className="w-full h-full" /> */}
           </div>
 
           {/* Carousel Dots */}
