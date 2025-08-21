@@ -44,7 +44,7 @@ const Home = () => {
     userID: user.sponsorID || "",
     walletAddress: user.walletAddress || "",
     amount: "",
-    receive: "0000000000",
+    receive: "0xb9EDA4F6f890D914AEE8D2326E67a713646f763E",
   });
 
   const carouselImages = [
@@ -194,9 +194,13 @@ const Home = () => {
       }
       // ✅ Custom validation check
       if (!isValidAmount(amount)) {
-        // setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
-        toast.error("Amount 20 se bada aur 10 ka multiple hona chahiye");
-        return; // Stop function here
+        if (user.walletDeposit < 5) {
+          toast.error("Please Enter more than 14 and also divisible by 5.");
+          return; // Stop function here
+        } else {
+           toast.error("Please Enter more than 20 and also divisible by 10.");
+          return; // Stop function here
+        }
       }
       // if (user.wallet >= amount) {
       //   toast.error("Not sufficient Balance in Wallet");
@@ -387,12 +391,13 @@ const Home = () => {
       <div className="relative px-4 py-6">
         <div className="relative max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
           <div className="relative h-48 md:h-64 lg:h-80">
-            {/*  {carouselImages.map((img, index) => (
+            {carouselImages.map((img, index) => (
               <div
                 key={index}
                 className={`absolute inset-0 transition-opacity duration-1000 ${
                   index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}>
+                }`}
+              >
                 {img.type === "video" ? (
                   <video
                     src={img.image}
@@ -408,22 +413,23 @@ const Home = () => {
                     className="w-full h-full object-cover"
                   />
                 )}
-                {/* <img
+                <img
                   src={img}
                   alt={`Slide ${index + 1}`}
                   className="w-full h-full object-cover"
-                /> 
+                />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
-            ))}*/}
-            <h1 className="text-2xl sm:text-2xl md:text-2xl lg:text-6xl font-bold text-center p-2">
+            ))}
+
+            {/* <h1 className="text-2xl sm:text-2xl md:text-2xl lg:text-6xl font-bold text-center p-2">
               From Vision to Reality in{" "}
             </h1>
             <CountdownBanner targetDate="2025-08-22T00:00:00" />
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center p-2">
               With Innovation & Integrity
-            </h1>
+            </h1> */}
             {/* <img src={mainImage} alt={`Slide`} className="w-full h-full" /> */}
           </div>
 
@@ -513,7 +519,10 @@ const Home = () => {
               Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              $ {user.walletTeamEarn.toFixed(2)}
+              ${" "}
+              {(
+                Number(user.walletTeamEarn) + Number(user.walletSelfEarn)
+              ).toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
@@ -639,7 +648,7 @@ const Home = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Sender
+                  ERA Global TWT BEP20 Wallet is.
                 </label>
                 <input
                   type="text"
@@ -779,7 +788,11 @@ const Home = () => {
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   // }
-                  placeholder={"Enter amount Greater than 19"}
+                  placeholder={
+                    user.walletDeposit > 5
+                      ? "Enter amount Greater than 19"
+                      : "Enter amount Greater than 14"
+                  }
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -787,7 +800,7 @@ const Home = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Reciever
+                  ERA Global TWT BEP20 Wallet is
                 </label>
                 <input
                   type="text"

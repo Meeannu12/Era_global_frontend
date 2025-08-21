@@ -21,9 +21,9 @@ const Signup = () => {
   const searchParams = new URLSearchParams(location.search);
   const sponsorID = searchParams.get("sponsorId");
 
-  if (sponsorID === null) {
-    toast.error("Sponsor ID not found");
-  }
+  // if (sponsorID === null) {
+  //   toast.error("Sponsor ID not found");
+  // }
 
   const [formData, setFormData] = useState({
     username: "",
@@ -136,6 +136,8 @@ const Signup = () => {
               <input
                 type="tel"
                 name="phone"
+                // pattern="^[5-9][0-9]{9}$"
+                maxLength={10}
                 placeholder="Mobile No"
                 value={formData.phone}
                 onChange={handleChange}
@@ -176,7 +178,8 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed">
+              className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <span className="flex items-center justify-center">
                 {loading ? (
                   <>
@@ -215,7 +218,8 @@ const Signup = () => {
             {/* Close button */}
             <button
               onClick={handleClosePopup}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
               <X className="w-6 h-6" />
             </button>
 
@@ -245,7 +249,8 @@ const Signup = () => {
                     onClick={() =>
                       copyToClipboard(sponsorIDAfterRegister, "Sponsor ID")
                     }
-                    className="text-purple-400 hover:text-purple-300 transition-colors">
+                    className="text-purple-400 hover:text-purple-300 transition-colors"
+                  >
                     {copiedField === "Sponsor ID" ? (
                       <Check className="w-4 h-4" />
                     ) : (
@@ -267,7 +272,8 @@ const Signup = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-400 hover:text-white transition-colors">
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
                       ) : (
@@ -278,7 +284,8 @@ const Signup = () => {
                       onClick={() =>
                         copyToClipboard(formData.password, "Password")
                       }
-                      className="text-purple-400 hover:text-purple-300 transition-colors">
+                      className="text-purple-400 hover:text-purple-300 transition-colors"
+                    >
                       {copiedField === "Password" ? (
                         <Check className="w-4 h-4" />
                       ) : (
@@ -307,7 +314,8 @@ const Signup = () => {
             <div className="flex gap-3">
               <button
                 onClick={handleProceedToSignin}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200">
+                className="flex-1 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200"
+              >
                 Go to Login
               </button>
             </div>

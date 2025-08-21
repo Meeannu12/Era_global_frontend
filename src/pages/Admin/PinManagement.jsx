@@ -893,7 +893,7 @@ const PinManagement = () => {
                         <tr className="border-b border-gray-600">
                           <th className="px-1 py-1">Amount</th>
                           <th className="px-1 py-1">Mode</th>
-                          <th className="px-1 py-1">sponsorID</th>
+                          <th className="px-1 py-1">User Id</th>
                           <th className="px-1 py-1">Sender Wallet</th>
                           <th className="px-1 py-1">Receive Wallet</th>
                           <th className="px-1 py-1">Status</th>
@@ -908,7 +908,12 @@ const PinManagement = () => {
                               {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
-                            <td className="px-1 py-1 text-center">{tx.sponsorID}</td>
+                            <td className="px-1 py-1 text-center">
+                              <div className="">
+                                {tx.sponsorID} {tx?.user?.username}
+                              </div>
+                            </td>
+
                             <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
                             </td>
@@ -971,7 +976,7 @@ const PinManagement = () => {
                         <tr className="border-b border-gray-600">
                           <th className="px-1 py-1">Amount</th>
                           <th className="px-1 py-1">Mode</th>
-                          <th className="px-1 py-1">sponsorID</th>
+                          <th className="px-1 py-1">User Id</th>
                           <th className="px-1 py-1">Sender Wallet</th>
                           <th className="px-1 py-1">Receive Wallet</th>
                           <th className="px-1 py-1">Status</th>
@@ -986,7 +991,11 @@ const PinManagement = () => {
                               {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
-                            <td className="px-1 py-1 text-center">{tx.sponsorID}</td>
+                            <td className="px-1 py-1 text-center">
+                              <div className="">
+                                {tx.sponsorID} {tx?.user?.username}
+                              </div>
+                            </td>
                             <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
                             </td>
