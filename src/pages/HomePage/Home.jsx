@@ -521,7 +521,7 @@ const Home = () => {
             <p className="text-white text-3xl font-bold">
               ${" "}
               {(
-                Number(user.walletTeamEarn) + Number(user.walletSelfEarn)
+                Number(user?.walletTeamEarn) + Number(user?.walletSelfEarn)
               ).toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
@@ -767,11 +767,11 @@ const Home = () => {
                 </label>
                 <input
                   type="text"
-                  value={user.walletAddress}
+                  value={user?.walletAddress}
                   // onChange={(e) =>
                   //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
                   // }
-                  placeholder={user.walletAddress}
+                  placeholder={user?.walletAddress}
                   disabled={true}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
@@ -789,7 +789,7 @@ const Home = () => {
                   //   setEditForm((prev) => ({ ...prev, amount: e.target.value }))
                   // }
                   placeholder={
-                    user.walletDeposit > 5
+                    user?.walletDeposit > 5
                       ? "Enter amount Greater than 19"
                       : "Enter amount Greater than 14"
                   }
