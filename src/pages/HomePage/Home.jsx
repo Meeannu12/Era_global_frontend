@@ -146,6 +146,11 @@ const Home = () => {
       // }
       // ✅ check amount grater then wallet amount
 
+      if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
+        toast.error("Please add wallet address go to profile");
+        return;
+      }
+
       if (amount < 10) {
         toast.error("minimum Withdrawal Limit 10");
         return;
@@ -192,13 +197,19 @@ const Home = () => {
         toast.error("Please enter amount");
         return;
       }
+
+      if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
+        toast.error("Please add wallet address go to profile");
+        return;
+      }
+
       // ✅ Custom validation check
       if (!isValidAmount(amount)) {
         if (user.walletDeposit < 5) {
           toast.error("Please Enter more than 14 and also divisible by 5.");
           return; // Stop function here
         } else {
-           toast.error("Please Enter more than 20 and also divisible by 10.");
+          toast.error("Please Enter more than 20 and also divisible by 10.");
           return; // Stop function here
         }
       }
