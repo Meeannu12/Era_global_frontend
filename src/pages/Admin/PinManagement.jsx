@@ -978,7 +978,7 @@ const PinManagement = () => {
                           <th className="px-1 py-1">Mode</th>
                           <th className="px-1 py-1">User Id</th>
                           <th className="px-1 py-1">Sender Wallet</th>
-                          <th className="px-1 py-1">Receive Wallet</th>
+                          <th className="px-1 py-1">Transaction Id</th>
                           <th className="px-1 py-1">Status</th>
                           <th className="px-1 py-1">Date</th>
                           <th className="px-1 py-1 text-center">Actions</th>
@@ -992,15 +992,16 @@ const PinManagement = () => {
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
                             <td className="px-1 py-1 text-center">
-                              <div className="">
-                                {tx.sponsorID} {tx?.user?.username}
+                              <div className=" flex flex-col">
+                                <span>{tx.sponsorID}</span>
+                                <span>{tx?.user?.username}</span>
                               </div>
                             </td>
                             <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
                             </td>
                             <td className="px-1 py-1 text-center">
-                              {tx.receiveWallet}
+                              {tx?.transaction || "not found"}
                             </td>
                             <td className="px-1 py-1 text-center">
                               {tx.verficationStatus}
