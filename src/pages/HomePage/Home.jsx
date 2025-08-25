@@ -206,10 +206,10 @@ const Home = () => {
         return;
       }
 
-      if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
-        toast.error("Please add wallet address go to profile");
-        return;
-      }
+      // if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
+      //   toast.error("Please add wallet address go to profile");
+      //   return;
+      // }
 
       // ✅ Custom validation check
       if (!isValidAmount(amount)) {
