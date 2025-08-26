@@ -1,7 +1,12 @@
 import React from "react";
 import bg from "../../assets/images/background-1.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, CircleArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRightCircle,
+  CircleArrowRight,
+  List,
+} from "lucide-react";
 import { useAuth } from "../../context/authContext";
 
 const Wallet = () => {
@@ -32,11 +37,11 @@ const Wallet = () => {
       </div>
 
       {/* Withdraw Button */}
-      <Link
+      {/* <Link
         to="/widthdrawfund"
         className="bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-center font-semibold my-3 rounded mx-4">
         Withdraw
-      </Link>
+      </Link> */}
       {/* <button className="bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-center font-semibold my-3 rounded mx-4">
         Withdraw
       </button> */}
@@ -67,19 +72,34 @@ const Wallet = () => {
       </div>
 
       {/* History Lists */}
-      <div className="mx-4 space-y-3 mb-2">
+      <div className="flex flex-col px-4 space-y-3 gap-2">
         {[
           "Earning Wallet History",
-          "Top up Wallet History",
+          // "Top up Wallet History",
           "Deposit History",
           "Withdraw History",
         ].map((item, i) => (
-          <div
-            key={i}
-            className="flex justify-between items-center bg-gray-800 p-3 rounded">
-            <p className="text-white">{item}</p>
-            <CircleArrowRight className="w-6 h-6 text-white" />
-          </div>
+          <Link to={`/team/level-view`}>
+            <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+              <div className="flex items-center gap-3" key={i}>
+                {/* <div
+                  key={i}
+                  className="flex justify-between items-center bg-gray-800 p-3 rounded" */}
+                {/* > */}
+                <List className="text-yellow-400 w-5 h-5" />
+                <span>{item}</span>
+                {/* <p className="text-white">{item}</p> */}
+                {/* <CircleArrowRight className="w-6 h-6 text-white" /> */}
+                {/* </div> */}
+              </div>
+              <span>
+                <ArrowRightCircle className="w-5 h-5" />
+              </span>
+            </div>
+          </Link>
+          //       <List className="text-yellow-400 w-5 h-5" />
+          //       <span>Level View</span>
+          //
         ))}
       </div>
     </div>

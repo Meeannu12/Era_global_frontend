@@ -905,7 +905,7 @@ const PinManagement = () => {
                         {withdrawTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
                             <td className="px-1 py-1 text-center">
-                              {tx.amount}
+                              $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
                             <td className="px-1 py-1 text-center">
@@ -977,7 +977,7 @@ const PinManagement = () => {
                           <th className="px-1 py-1">Amount</th>
                           <th className="px-1 py-1">Mode</th>
                           <th className="px-1 py-1">User Id</th>
-                          <th className="px-1 py-1">Sender Wallet</th>
+                          {/* <th className="px-1 py-1">Sender Wallet</th> */}
                           <th className="px-1 py-1">Transaction Id</th>
                           <th className="px-1 py-1">Status</th>
                           <th className="px-1 py-1">Date</th>
@@ -988,7 +988,7 @@ const PinManagement = () => {
                         {depositTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
                             <td className="px-1 py-1 text-center">
-                              {tx.amount}
+                              $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
                             <td className="px-1 py-1 text-center">
@@ -997,9 +997,9 @@ const PinManagement = () => {
                                 <span>{tx?.user?.username}</span>
                               </div>
                             </td>
-                            <td className="px-1 py-1 text-center">
+                            {/* <td className="px-1 py-1 text-center">
                               {tx.senderWallet}
-                            </td>
+                            </td> */}
                             <td className="px-1 py-1 text-center">
                               {tx?.transaction || "not found"}
                             </td>

@@ -117,7 +117,7 @@ const Team = () => {
             </span>
           </div>
         </Link>
-        <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+        {/* <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
           <div className="flex items-center gap-3">
             <List className="text-yellow-400 w-5 h-5" />
             <span>Downline Team</span>
@@ -125,7 +125,7 @@ const Team = () => {
           <span>
             <ArrowRightCircle className="w-5 h-5" />
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

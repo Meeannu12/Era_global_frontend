@@ -8,8 +8,8 @@ const BottomNav = () => {
 
   const navItems = [
     { text: "Home", path: "/", icon: <Home size={22} /> },
-    { text: "Team", path: "/team-statics", icon: <Users size={22} /> },
-    { text: "Wallet", path: "/wallet-statics", icon: <Wallet size={22} /> },
+    { text: "Team", path: "/team-statistics", icon: <Users size={22} /> },
+    { text: "Wallet", path: "/wallet-statistics", icon: <Wallet size={22} /> },
     { text: "Bonus", path: "/bonus", icon: <Gift size={22} /> },
     { text: "Profile", path: "/profile", icon: <User size={22} /> },
   ];

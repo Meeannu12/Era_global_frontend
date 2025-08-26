@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Plus,
@@ -25,8 +26,8 @@ import {
   addWithdrawService,
   getPaymentTransactions,
 } from "../../apis/userServices";
-import mainImage from "../../assets/main_image.jpg";
-import CountdownBanner from "../../components/CountdownBanner";
+// import mainImage from "../../assets/main_image.jpg";
+// import CountdownBanner from "../../components/CountdownBanner";
 
 const Home = () => {
   const { user, logout } = useAuth();
@@ -38,6 +39,7 @@ const Home = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [error, setError] = useState("");
   const [transaction, setTransaction] = useState([]);
+  const navigate = useNavigate();
 
   // Form states
   const [editForm, setEditForm] = useState({
@@ -585,7 +587,10 @@ const Home = () => {
             <h2 className="text-red-400 text-sm font-medium uppercase tracking-wider">
               Recent Transactions
             </h2>
-            <button className="text-gray-400 text-sm hover:text-white transition-colors">
+            <button
+              className="text-gray-400 text-sm hover:text-white transition-colors"
+              onClick={() => navigate("/wallet-statistics")} // yaha apna route likho
+            >
               VIEW ALL →
             </button>
           </div>
@@ -601,7 +606,10 @@ const Home = () => {
                     <tr className="border-b border-gray-600">
                       <th className="px-4 py-2 text-left">Amount</th>
                       <th className="px-4 py-2 text-left">Mode</th>
-                      <th className="px-4 py-2 text-left">Sender Wallet</th>
+                      <th className="px-4 py-2 text-left">
+                        Your Wallet Address
+                      </th>
+                      <th className="px-4 py-2 text-left">Transaction Id</th>
                       <th className="px-4 py-2 text-left">Receive Wallet</th>
                       <th className="px-4 py-2 text-left">Status</th>
                       <th className="px-4 py-2 text-left">Date</th>
@@ -609,16 +617,44 @@ const Home = () => {
                   </thead>
                   <tbody>
                     {transaction
-                      .slice(-5) // ye last 7 items lega, agar 7 se kam ho to jitne hain utne hi
+                      .slice(-10) // ye last 7 items lega, agar 7 se kam ho to jitne hain utne hi
                       .map((tx) => (
-                        <tr key={tx._id} className="border-b border-gray-700">
-                          <td className="px-4 py-2 ">{tx.amount}</td>
+                        <tr
+                          key={tx._id}
+                          className={`border-b border-gray-700 rounded-2xl
+                        ${
+                          tx.verficationStatus === "Verified"
+                            ? "bg-green-500 rounded-full "
+                            : ""
+                        }
+    ${tx.verficationStatus === "Rejected" ? "bg-red-500 " : ""}
+    ${
+      tx.verficationStatus === "Unverified" ? "bg-purple-500 rounded-full " : ""
+    }`}
+                        >
+                          <td className="px-4 py-2 ">$ {tx.amount}</td>
                           <td className="px-4 py-2">{tx.mode}</td>
-                          <td className="px-4 py-2">{tx.senderWallet}</td>
-                          <td className="px-4 py-2">{tx.receiveWallet}</td>
+                          <td
+                            className="px-4 py-2 max-w-[160px] truncate"
+                            title={tx.senderWallet}
+                          >
+                            {tx.senderWallet}
+                          </td>
+                          <td
+                            className="px-4 py-2 max-w-[120px] truncate"
+                            title={tx.transaction || "Applicable in Withdrawal"}
+                          >
+                            {tx.transaction || "Applicable in Withdrawal"}
+                          </td>
+                          <td
+                            className="px-4 py-2 max-w-[160px] truncate"
+                            title={tx.receiveWallet}
+                          >
+                            {tx.receiveWallet}
+                          </td>
                           <td className="px-4 py-2">{tx.verficationStatus}</td>
                           <td className="px-4 py-2">
-                            {new Date(tx.createdAt).toLocaleString()}
+                            {new Date(tx.createdAt).toISOString().split("T")[0]}
                           </td>
                         </tr>
                       ))}
@@ -704,7 +740,7 @@ const Home = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Reciever
+                  Your Wallet Address
                 </label>
                 <input
                   type="email"

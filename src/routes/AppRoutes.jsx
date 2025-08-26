@@ -26,8 +26,8 @@ const AppRoutes = () => {
       }>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/team-statics" element={<Team />} />
-        <Route path="/wallet-statics" element={<Wallet />} />
+        <Route path="/team-statistics" element={<Team />} />
+        <Route path="/wallet-statistics" element={<Wallet />} />
         <Route path="/addfund" element={<AddFund />} />
         <Route path="/widthdrawfund" element={<WidthdrawFund />} />
         <Route path="/bonus" element={<Bonus />} />
