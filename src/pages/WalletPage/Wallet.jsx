@@ -74,7 +74,7 @@ const Wallet = () => {
       {/* History Lists */}
       <div className="flex flex-col px-4 space-y-3 gap-2">
         {/* Earning Wallet History */}
-        <Link to={`/wallet/withdrawal-History`}>
+        <Link to={`/wallet/commission-history`}>
           <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
             <div className="flex items-center gap-3">
               <List className="text-yellow-400 w-5 h-5" />

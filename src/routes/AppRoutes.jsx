@@ -19,9 +19,9 @@ const WithdralalHistory = lazy(() =>
   import("../pages/WalletPage/WithdrawalHistory")
 );
 const DepositHistory = lazy(() => import("../pages/WalletPage/DepositHistory"));
-// const WithdralalHistory = lazy(() =>
-//   import("../pages/WalletPage/WithdrawalHistory")
-// );
+const CommissionHistory = lazy(() =>
+  import("../pages/WalletPage/commissionHistory")
+);
 
 const AppRoutes = () => {
   return (
@@ -46,6 +46,10 @@ const AppRoutes = () => {
         <Route path="/team/level-view" element={<LevelView />} />
         <Route path="/team/my-referrals" element={<MyReferrals />} />
         <Route path="/wallet/deposit-history" element={<DepositHistory />} />
+        <Route
+          path="/wallet/commission-history"
+          element={<CommissionHistory />}
+        />
         <Route
           path="/wallet/withdrawal-history"
           element={<WithdralalHistory />}
