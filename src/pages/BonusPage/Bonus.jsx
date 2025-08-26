@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowUp,
   ChevronRight,
@@ -8,6 +8,7 @@ import {
   Crown,
   Gift,
   Target,
+  ChevronDown,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +16,10 @@ import { useNavigate } from "react-router-dom";
 const Bonus = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
-    console.log("shgfvgwj", user);
+    // console.log("shgfvgwj", user);
   }, []);
   const items = [
     {
@@ -83,7 +85,7 @@ const Bonus = () => {
     //   path: "#",
     // },
     {
-      name: "Royalty Income",
+      name: "Royalty Income Chart",
       icon: <Crown className="w-5 h-5" />,
       iconColor: "text-amber-400",
       bgColor: "bg-amber-500/10",
@@ -91,7 +93,7 @@ const Bonus = () => {
       path: "#",
     },
     {
-      name: "Reward Income",
+      name: "Reward Income Chart",
       icon: <Gift className="w-5 h-5" />,
       iconColor: "text-pink-400",
       bgColor: "bg-pink-500/10",
@@ -99,6 +101,93 @@ const Bonus = () => {
       path: "#",
     },
   ];
+
+  const data = [
+    {
+      level: "L1",
+      direct: "300$",
+      team: "300$",
+      roi: "100% of ROI",
+      passive: "10$ Monthly",
+      reward: "0",
+    },
+    {
+      level: "L2",
+      direct: "350$",
+      team: "700$",
+      roi: "0.50%",
+      passive: "50$ Monthly",
+      reward: "50$",
+    },
+    {
+      level: "L3",
+      direct: "500$",
+      team: "2000$",
+      roi: "0.70%",
+      passive: "100$ Monthly",
+      reward: "100$",
+    },
+    {
+      level: "L4",
+      direct: "600$",
+      team: "9000$",
+      roi: "1%",
+      passive: "300$ Monthly",
+      reward: "600$",
+    },
+    {
+      level: "L5",
+      direct: "1000$",
+      team: "22000$",
+      roi: "1.5%",
+      passive: "600$ Monthly",
+      reward: "1100$",
+    },
+    {
+      level: "L6",
+      direct: "2000$",
+      team: "55000$",
+      roi: "1.75%",
+      passive: "1100$ Monthly",
+      reward: "3300$",
+    },
+    {
+      level: "L7",
+      direct: "3000$",
+      team: "1.10 lac $",
+      roi: "2%",
+      passive: "2500$ Monthly",
+      reward: "10000$",
+    },
+    {
+      level: "L8",
+      direct: "4000$",
+      team: "5 lac $",
+      roi: "2.25%",
+      passive: "4000$ Monthly",
+      reward: "25000$",
+    },
+    {
+      level: "L9",
+      direct: "7000$",
+      team: "15 lac $",
+      roi: "2.5%",
+      passive: "11000$ Monthly",
+      reward: "250000$",
+    },
+    {
+      level: "L10",
+      direct: "15000$",
+      team: "50 lac $",
+      roi: "3%",
+      passive: "21000$ Monthly",
+      reward: "1100000$",
+    },
+  ];
+
+  const toggleExpand = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 p-4 sm:p-6">
@@ -240,6 +329,7 @@ const Bonus = () => {
           {listItem.map((item, index) => (
             <div
               key={index}
+              onClick={() => toggleExpand(index)} // 👈 yahan expand/collapse hoga
               // onClick={() => navigate(item.path)} // 👈 yahan navigation
               className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50"
             >
@@ -261,9 +351,153 @@ const Bonus = () => {
                 </div>
                 <div className="flex items-center space-x-3">
                   {/* <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div> */}
-                  <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" />
+                  {/* <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" /> */}
+                  {expandedIndex === index ? (
+                    <ChevronDown className="w-6 h-6 text-slate-400 group-hover:text-white transition-all duration-300" />
+                  ) : (
+                    <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" />
+                  )}
                 </div>
               </div>
+              {/* Expanded Details */}
+              {/* {expandedIndex === index && (
+                <div className="p-4 bg-slate-900 text-slate-300 border-t border-slate-700/50 animate-fadeIn">
+                  {item.details ??
+                    "Yahan tum details show kar sakte ho (API data, table, etc.)"}
+                </div>
+              )} */}
+
+              {expandedIndex === index && (
+                <div className="p-4 bg-slate-900 text-slate-300 border-t border-slate-700/50 animate-fadeIn">
+                  {index === 0 && (
+                    <div className="overflow-x-auto p-4">
+                      <h2 className="text-2xl font-bold text-red-600 mb-4 text-center">
+                        * TEAM INCOME CHART
+                      </h2>
+                      <table className="min-w-full border border-slate-600 rounded-lg overflow-hidden">
+                        <thead>
+                          <tr className="bg-orange-500 text-white text-sm md:text-base">
+                            <th className="px-4 py-2 border border-slate-600">
+                              Level
+                            </th>
+                            <th className="px-4 py-2 border border-slate-600">
+                              Direct Business
+                            </th>
+                            <th className="px-4 py-2 border border-slate-600">
+                              Total Team Business
+                            </th>
+                            {/* <th className="px-4 py-2 border border-slate-600">
+                              Total ROI Income
+                            </th> */}
+                            <th className="px-4 py-2 border border-slate-600">
+                              Royalty Income
+                            </th>
+                            {/* <th className="px-4 py-2 border border-slate-600">
+                              Rewards Income
+                            </th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.map((row, i) => (
+                            <tr
+                              key={i}
+                              className={`${
+                                i % 2 === 0
+                                  ? "bg-slate-800/50"
+                                  : "bg-slate-900/50"
+                              } text-slate-200`}
+                            >
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.level}
+                              </td>
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.direct}
+                              </td>
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.team}
+                              </td>
+                              {/* <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.roi}
+                              </td> */}
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.passive}
+                              </td>
+                              {/* <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.reward}
+                              </td> */}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {index === 1 && (
+                    <div className="overflow-x-auto p-4">
+                      <h2 className="text-2xl font-bold text-red-600 mb-4 text-center">
+                        * TEAM INCOME CHART
+                      </h2>
+                      <table className="min-w-full border border-slate-600 rounded-lg overflow-hidden">
+                        <thead>
+                          <tr className="bg-orange-500 text-white text-sm md:text-base">
+                            <th className="px-4 py-2 border border-slate-600">
+                              Level
+                            </th>
+                            <th className="px-4 py-2 border border-slate-600">
+                              Direct Business
+                            </th>
+                            <th className="px-4 py-2 border border-slate-600">
+                              Total Team Business
+                            </th>
+                            {/* <th className="px-4 py-2 border border-slate-600">
+                              Total ROI Income
+                            </th> */}
+                            {/* <th className="px-4 py-2 border border-slate-600">
+                              Royalty Income
+                            </th> */}
+                            <th className="px-4 py-2 border border-slate-600">
+                              Rewards Income
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.map((row, i) => (
+                            <tr
+                              key={i}
+                              className={`${
+                                i % 2 === 0
+                                  ? "bg-slate-800/50"
+                                  : "bg-slate-900/50"
+                              } text-slate-200`}
+                            >
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.level}
+                              </td>
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.direct}
+                              </td>
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.team}
+                              </td>
+                              {/* <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.roi}
+                              </td> */}
+                              {/* <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.passive}
+                              </td> */}
+                              <td className="px-4 py-2 border border-slate-700 text-center">
+                                {row.reward}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {/* Agar aur bhi indexes ke liye alag details dikhani ho to yahin add kar sakta hai */}
+                </div>
+              )}
             </div>
           ))}
         </div>

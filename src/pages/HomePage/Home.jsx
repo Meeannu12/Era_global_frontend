@@ -136,24 +136,32 @@ const Home = () => {
   const handelSubmitWithdraw = async () => {
     const amount = Number(editForm.amount);
     try {
+      const today = new Date().getDay(); // 0=Sunday, 1=Monday, ... 3=Wednesday
+
       // 1️⃣ Empty or zero check
       if (!amount) {
         toast.error("Please enter amount");
         return;
       }
-
-      const notOpen = true;
-      if (notOpen) {
-        toast.error("withdraw Every Wednesday 24 hours Transfer");
+      // check today is wednesday or not
+      if (today !== 3) {
+        // setError("❌ You can only submit this form on Wednesday!");
+        toast.error("Request will be processed on Wednesday");
         return;
       }
 
-      // ✅ Custom validation check
-      // if (!isValidAmount(amount)) {
-      //   // setError("Amount 20 se bada aur 10 ka multiple hona chahiye");
-      //   toast.error("Amount 20 se bada aur 10 ka multiple hona chahiye");
-      //   return; // Stop function here
-      // }
+      // check user input amount greater of 10 or not
+      if (amount < 10) {
+        toast.error("You can not withdraw as Your earning is less than $10");
+        return;
+      }
+
+      const wall = true;
+      if (wall) {
+        toast.error("Not sufficient Balance in Wallet");
+        return;
+      }
+
       // ✅ check amount grater then wallet amount
 
       if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
@@ -687,9 +695,13 @@ const Home = () => {
 
             <div className="p-6 space-y-4">
               <div>
-                <span className="text-sm text-red-500">
-                  Withdraw Every Wednesday 24 hours Transfer
-                </span>
+                <p className="p-0 text-sm text-red-500">
+                  You withdraw on Wednesday Only
+                </p>
+                <p className="text-sm text-red-500">
+                  You can request for Minimum $10 for withdrawal from
+                  your earning wallet
+                </p>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   User ID
                 </label>
@@ -752,9 +764,6 @@ const Home = () => {
                   disabled={true}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
-                <span className="text-sm text-red-500 p-0">
-                  {"Minimum 10 Dollar Withdraw Earning program "}
-                </span>
               </div>
               {/* <p className="p-0" m-0></p> */}
 
