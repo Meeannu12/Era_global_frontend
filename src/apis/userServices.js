@@ -190,3 +190,18 @@ export const getAllEarningCommissionByUserId = async ({
     throw error;
   }
 };
+
+
+// get user withdraw request by user wiht sponsorId
+export const getTeamIncomeBySponsorID = async ({
+  sponsorID,
+}) => {
+  try {
+    const response = await AXIOS.get(
+      `/api/v1/users/getTeamIncomFindByUser/${sponsorID}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

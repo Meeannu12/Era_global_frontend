@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ArrowUp,
   ChevronRight,
@@ -9,8 +9,14 @@ import {
   Gift,
   Target,
 } from "lucide-react";
+import { useAuth } from "../../context/authContext";
 
 const Bonus = () => {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    // console.log("shgfvgwj", user);
+  }, []);
   const items = [
     {
       name: "Referral Ad Income",
@@ -154,12 +160,14 @@ const Bonus = () => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden hover:border-slate-600/50">
+              className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden hover:border-slate-600/50"
+            >
               <div className={`h-1 bg-gradient-to-r ${item.gradient}`}></div>
               <div className="p-2">
                 <div className="flex items-center justify-between mb-6">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-r ${item.gradient} text-white shadow-lg ${item.shadowColor} group-hover:scale-110 transition-transform duration-300`}>
+                    className={`p-3 rounded-xl bg-gradient-to-r ${item.gradient} text-white shadow-lg ${item.shadowColor} group-hover:scale-110 transition-transform duration-300`}
+                  >
                     {item.icon}
                   </div>
                   <span className="text-3xl font-bold text-white group-hover:text-purple-200 transition-colors duration-300">
@@ -171,7 +179,8 @@ const Bonus = () => {
                 </h3>
                 <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
                   <div
-                    className={`h-2 bg-gradient-to-r ${item.gradient} rounded-full w-0 group-hover:w-4 transition-all duration-700 ease-out`}></div>
+                    className={`h-2 bg-gradient-to-r ${item.gradient} rounded-full w-0 group-hover:w-4 transition-all duration-700 ease-out`}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -189,11 +198,13 @@ const Bonus = () => {
           {listItem.map((item, index) => (
             <div
               key={index}
-              className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50">
+              className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50"
+            >
               <div className="flex items-center justify-between p-2">
                 <div className="flex items-center space-x-5">
                   <div
-                    className={`p-2 rounded-xl ${item.bgColor} ${item.iconColor} border ${item.borderColor} shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-xl`}>
+                    className={`p-2 rounded-xl ${item.bgColor} ${item.iconColor} border ${item.borderColor} shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-xl`}
+                  >
                     {item.icon}
                   </div>
                   <div>

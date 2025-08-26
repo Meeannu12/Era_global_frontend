@@ -11,13 +11,18 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import toast from "react-hot-toast";
-import { getUserCount } from "../../apis/userServices";
+import {
+  getTeamIncomeBySponsorID,
+  getUserCount,
+} from "../../apis/userServices";
 
 const Team = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [directUserCount, setDirectUserCount] = React.useState(0);
   const [indirectUserCount, setIndirectUserCount] = React.useState(0);
+  const [directUserIncome, setDirectUserIncome] = React.useState(0);
+  const [levelUserIncome, setLevelUserIncome] = React.useState(0);
 
   const fetchTotalCount = async () => {
     try {
@@ -33,8 +38,26 @@ const Team = () => {
     }
   };
 
+  const fetchTeamIncome = async () => {
+    try {
+      const response = await getTeamIncomeBySponsorID({
+        sponsorID: user.sponsorID,
+      });
+      // console.log(response);
+      setDirectUserIncome(response?.directIncome || 0);
+      setLevelUserIncome(response?.teamIncome || 0);
+    } catch (error) {
+      console.error("Error fetching total count:", error);
+      toast.error(
+        error.response.data.message ||
+          "Something went wrong During Fetching Count"
+      );
+    }
+  };
+
   useEffect(() => {
     fetchTotalCount();
+    fetchTeamIncome();
   }, []);
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
@@ -68,11 +91,11 @@ const Team = () => {
         <div className="bg-gray-800 p-4 rounded-xl shadow">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm">Refer Business</p>
-              <h2 className="text-2xl font-bold">$ 0.00</h2>
-              <p className="text-xs text-green-400 mt-1">
+              <p className="text-sm">Direct Referral Business</p>
+              <h2 className="text-2xl font-bold">$ {directUserIncome}</h2>
+              {/* <p className="text-xs text-green-400 mt-1">
                 ↑ $ 0.00 Yesterday Business
-              </p>
+              </p> */}
             </div>
             <Flag className="text-yellow-400 w-5 h-5" />
           </div>
@@ -83,10 +106,10 @@ const Team = () => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm">Team Business</p>
-              <h2 className="text-2xl font-bold">$ 0.00</h2>
-              <p className="text-xs text-green-400 mt-1">
+              <h2 className="text-2xl font-bold">$ {levelUserIncome}</h2>
+              {/* <p className="text-xs text-green-400 mt-1">
                 ↑ $ 0.00 Yesterday Business
-              </p>
+              </p> */}
             </div>
             <MessageCircle className="text-blue-400 w-5 h-5" />
           </div>

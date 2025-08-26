@@ -12,6 +12,8 @@ import { useAuth } from "../../context/authContext";
 const Wallet = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  // console.log("vvvvvv",user)
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       {/* Topbar */}
@@ -24,7 +26,13 @@ const Wallet = () => {
           className="absolute inset-0 w-full h-full object-cover  opacity-30"
         />
         <div className="relative text-center">
-          <p className="text-3xl font-bold">${user.pin ? 5.0 : 0.0}</p>
+          <p className="text-3xl font-bold">{`$ ${(
+            Number(user?.walletTeamEarn) +
+            Number(user?.walletSelfEarn) +
+            Number(user?.walletRoyalty) +
+            Number(user?.walletDeposit) +
+            Number(user?.walletReward)
+          ).toFixed(2)}`}</p>
           <p className="text-sm">Account Balance</p>
         </div>
 
@@ -53,7 +61,15 @@ const Wallet = () => {
         </h2>
         <div className="flex justify-between mb-2">
           <p>Total Income</p>
-          <p className="text-green-400">+ $0.00</p>
+          <p className="text-green-400">
+            +{" "}
+            {`$ ${(
+              Number(user?.walletTeamEarn) +
+              Number(user?.walletSelfEarn) +
+              Number(user?.walletRoyalty) +
+              Number(user?.walletReward)
+            ).toFixed(2)}`}
+          </p>
         </div>
         <div className="flex justify-between mb-2">
           <p>Total Withdraw</p>
@@ -62,11 +78,16 @@ const Wallet = () => {
         <div className="flex justify-between mt-4">
           <div>
             <p className="text-sm text-gray-400">Earning Wallet</p>
-            <p className="text-green-400 text-lg">$0.00</p>
+            <p className="text-green-400 text-lg">{`$ ${(
+              Number(user?.walletTeamEarn) +
+              Number(user?.walletSelfEarn) +
+              Number(user?.walletRoyalty) +
+              Number(user?.walletReward)
+            ).toFixed(2)}`}</p>
           </div>
           <div>
             <p className="text-sm text-gray-400">Assets Wallet</p>
-            <p className="text-red-400 text-lg">$0.00</p>
+            <p className="text-red-400 text-lg">$ {user?.walletDeposit}</p>
           </div>
         </div>
       </div>
