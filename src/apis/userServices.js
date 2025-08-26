@@ -140,3 +140,53 @@ export const walletAddress = async (data) => {
     throw error;
   }
 };
+
+
+// get user Deposit request by user wiht sponsorId
+export const getAllDepositRequestByUserId = async ({
+  sponsorID,
+  limit,
+  page,
+}) => {
+  try {
+    const response = await AXIOS.get(
+      `/api/v1/payment/getDepositHistorybyUser/${sponsorID}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// get user withdraw request by user wiht sponsorId
+export const getAllWithdrawRequestByUserId = async ({
+  sponsorID,
+  limit,
+  page,
+}) => {
+  try {
+    const response = await AXIOS.get(
+      `/api/v1/payment/getWithdrawalHistorybyUser/${sponsorID}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+// get user withdraw request by user wiht sponsorId
+export const getAllEarningCommissionByUserId = async ({
+  sponsorID,
+  limit,
+  page,
+}) => {
+  try {
+    const response = await AXIOS.get(
+      `/api/v1/payment/getCommissionHistoryToDay/${sponsorID}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

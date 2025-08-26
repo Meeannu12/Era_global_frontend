@@ -15,6 +15,13 @@ const Profile = lazy(() => import("../pages/ProfilePage/Profile"));
 const Contact = lazy(() => import("../pages/BonusPage/Contact"));
 const LevelView = lazy(() => import("../pages/TeamPage/LevelView"));
 const MyReferrals = lazy(() => import("../pages/TeamPage/MyReferrals"));
+const WithdralalHistory = lazy(() =>
+  import("../pages/WalletPage/WithdrawalHistory")
+);
+const DepositHistory = lazy(() => import("../pages/WalletPage/DepositHistory"));
+// const WithdralalHistory = lazy(() =>
+//   import("../pages/WalletPage/WithdrawalHistory")
+// );
 
 const AppRoutes = () => {
   return (
@@ -23,7 +30,8 @@ const AppRoutes = () => {
         <div className="flex items-center justify-center h-screen">
           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
         </div>
-      }>
+      }
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/team-statistics" element={<Team />} />
@@ -37,6 +45,11 @@ const AppRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/team/level-view" element={<LevelView />} />
         <Route path="/team/my-referrals" element={<MyReferrals />} />
+        <Route path="/wallet/deposit-history" element={<DepositHistory />} />
+        <Route
+          path="/wallet/withdrawal-history"
+          element={<WithdralalHistory />}
+        />
         <Route path="/admin/generate-pins" element={<PinManagement />} />
       </Routes>
     </Suspense>

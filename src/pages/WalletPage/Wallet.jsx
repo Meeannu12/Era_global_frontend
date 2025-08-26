@@ -73,34 +73,44 @@ const Wallet = () => {
 
       {/* History Lists */}
       <div className="flex flex-col px-4 space-y-3 gap-2">
-        {[
-          "Earning Wallet History",
-          // "Top up Wallet History",
-          "Deposit History",
-          "Withdraw History",
-        ].map((item, i) => (
-          <Link to={`/team/level-view`}>
-            <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
-              <div className="flex items-center gap-3" key={i}>
-                {/* <div
-                  key={i}
-                  className="flex justify-between items-center bg-gray-800 p-3 rounded" */}
-                {/* > */}
-                <List className="text-yellow-400 w-5 h-5" />
-                <span>{item}</span>
-                {/* <p className="text-white">{item}</p> */}
-                {/* <CircleArrowRight className="w-6 h-6 text-white" /> */}
-                {/* </div> */}
-              </div>
-              <span>
-                <ArrowRightCircle className="w-5 h-5" />
-              </span>
+        {/* Earning Wallet History */}
+        <Link to={`/wallet/withdrawal-History`}>
+          <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <List className="text-yellow-400 w-5 h-5" />
+              <span>{"Earning Wallet History"}</span>
             </div>
-          </Link>
-          //       <List className="text-yellow-400 w-5 h-5" />
-          //       <span>Level View</span>
-          //
-        ))}
+            <span>
+              <ArrowRightCircle className="w-5 h-5" />
+            </span>
+          </div>
+        </Link>
+
+        {/* Deposit History */}
+        <Link to={`/wallet/deposit-history`}>
+          <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <List className="text-yellow-400 w-5 h-5" />
+              <span>{"Deposit History"}</span>
+            </div>
+            <span>
+              <ArrowRightCircle className="w-5 h-5" />
+            </span>
+          </div>
+        </Link>
+
+        {/* Withdraw History */}
+        <Link to={`/wallet/withdrawal-history`}>
+          <div className="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <List className="text-yellow-400 w-5 h-5" />
+              <span>{"Withdraw History"}</span>
+            </div>
+            <span>
+              <ArrowRightCircle className="w-5 h-5" />
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   );
