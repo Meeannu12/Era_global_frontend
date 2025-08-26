@@ -292,7 +292,7 @@ const Profile = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          {/* <div className="grid grid-cols-3 gap-2 sm:gap-4">
             {stats.map((stat, index) => (
               <div
                 key={index}
@@ -318,7 +318,7 @@ const Profile = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
 

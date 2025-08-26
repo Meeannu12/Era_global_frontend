@@ -10,45 +10,47 @@ import {
   Target,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const Bonus = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
-    // console.log("shgfvgwj", user);
+    console.log("shgfvgwj", user);
   }, []);
   const items = [
     {
-      name: "Referral Ad Income",
-      amount: "$ 0.00",
+      name: "Self Income",
+      amount: `$ ${(user?.walletSelfEarn).toFixed(2)}`,
       icon: <Users className="w-5 h-5" />,
       gradient: "from-emerald-500 to-teal-600",
       shadowColor: "shadow-emerald-500/25",
     },
-    {
-      name: "Daily Income",
-      amount: "$ 0.00",
-      icon: <TrendingUp className="w-5 h-5" />,
-      gradient: "from-blue-500 to-cyan-600",
-      shadowColor: "shadow-blue-500/25",
-    },
+    // {
+    //   name: "Direct Level Income",
+    //   amount: `$ ${(user?.walletTeamEarn).toFixed(4)}`,
+    //   icon: <TrendingUp className="w-5 h-5" />,
+    //   gradient: "from-blue-500 to-cyan-600",
+    //   shadowColor: "shadow-blue-500/25",
+    // },
     {
       name: "Team Level Income",
-      amount: "$ 0.00",
+      amount: `$ ${(user?.walletTeamEarn).toFixed(2)}`,
       icon: <Users className="w-5 h-5" />,
       gradient: "from-purple-500 to-indigo-600",
       shadowColor: "shadow-purple-500/25",
     },
     {
       name: "Royalty Income",
-      amount: "$ 0.00",
+      amount: `$ ${(user?.walletRoyalty).toFixed(2)}`,
       icon: <Crown className="w-5 h-5" />,
       gradient: "from-amber-500 to-orange-600",
       shadowColor: "shadow-amber-500/25",
     },
     {
       name: "Reward Income",
-      amount: "$ 0.00",
+      amount: `$ ${(user?.walletReward).toFixed(2)}`,
       icon: <Gift className="w-5 h-5" />,
       gradient: "from-pink-500 to-rose-600",
       shadowColor: "shadow-pink-500/25",
@@ -56,33 +58,37 @@ const Bonus = () => {
   ];
 
   const listItem = [
-    {
-      name: "Referral Ad Bonus",
-      icon: <Target className="w-5 h-5" />,
-      iconColor: "text-emerald-400",
-      bgColor: "bg-emerald-500/10",
-      borderColor: "border-emerald-500/20",
-    },
-    {
-      name: "Daily Income",
-      icon: <TrendingUp className="w-5 h-5" />,
-      iconColor: "text-blue-400",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/20",
-    },
-    {
-      name: "Team Level Income",
-      icon: <Users className="w-5 h-5" />,
-      iconColor: "text-purple-400",
-      bgColor: "bg-purple-500/10",
-      borderColor: "border-purple-500/20",
-    },
+    // {
+    //   name: "Referral Ad Bonus",
+    //   icon: <Target className="w-5 h-5" />,
+    //   iconColor: "text-emerald-400",
+    //   bgColor: "bg-emerald-500/10",
+    //   borderColor: "border-emerald-500/20",
+    //   path: "#",
+    // },
+    // {
+    //   name: "Daily Income",
+    //   icon: <TrendingUp className="w-5 h-5" />,
+    //   iconColor: "text-blue-400",
+    //   bgColor: "bg-blue-500/10",
+    //   borderColor: "border-blue-500/20",
+    //   path: "/wallet/commission-history",
+    // },
+    // {
+    //   name: "Team Level Income",
+    //   icon: <Users className="w-5 h-5" />,
+    //   iconColor: "text-purple-400",
+    //   bgColor: "bg-purple-500/10",
+    //   borderColor: "border-purple-500/20",
+    //   path: "#",
+    // },
     {
       name: "Royalty Income",
       icon: <Crown className="w-5 h-5" />,
       iconColor: "text-amber-400",
       bgColor: "bg-amber-500/10",
       borderColor: "border-amber-500/20",
+      path: "#",
     },
     {
       name: "Reward Income",
@@ -90,6 +96,7 @@ const Bonus = () => {
       iconColor: "text-pink-400",
       bgColor: "bg-pink-500/10",
       borderColor: "border-pink-500/20",
+      path: "#",
     },
   ];
 
@@ -129,7 +136,7 @@ const Bonus = () => {
                 </span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold text-white mb-2 tracking-tight">
-                $0.00
+                {`$ ${Number(user?.walletDeposit).toFixed(2)}`}
               </h1>
               <div className="w-20 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mx-auto sm:mx-0"></div>
             </div>
@@ -142,7 +149,12 @@ const Bonus = () => {
                 </span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold text-white mb-2 tracking-tight">
-                $0.00
+                {`$ ${(
+                  Number(user?.walletTeamEarn) +
+                  Number(user?.walletSelfEarn) +
+                  Number(user?.walletRoyalty) +
+                  Number(user?.walletReward)
+                ).toFixed(2)}`}
               </h1>
               <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mx-auto sm:mx-0"></div>
             </div>
@@ -195,9 +207,40 @@ const Bonus = () => {
           Quick Actions
         </h2>
         <div className="space-y-4">
+          {/* {listItem.map((item, index) => ( */}
+          <div
+            // key={index}
+            onClick={() => navigate("/wallet/commission-history")} // 👈 yahan navigation
+            className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50"
+          >
+            <div className="flex items-center justify-between p-2">
+              <div className="flex items-center space-x-5">
+                <div
+                  className={`p-2 rounded-xl bg-blue-500/10  text-blue-400 border border-blue-500/20 shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-xl`}
+                >
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white text-lg group-hover:text-purple-200 transition-colors duration-300">
+                    {"Daily Income"}
+                  </h3>
+                  <p className="text-sm text-slate-400 mt-1 group-hover:text-slate-300 transition-colors duration-300">
+                    Tap to view details
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                {/* <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div> */}
+                <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" />
+              </div>
+            </div>
+          </div>
+          {/* ))} */}
+
           {listItem.map((item, index) => (
             <div
               key={index}
+              // onClick={() => navigate(item.path)} // 👈 yahan navigation
               className="group bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer overflow-hidden hover:border-slate-600/50"
             >
               <div className="flex items-center justify-between p-2">
