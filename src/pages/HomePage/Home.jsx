@@ -25,12 +25,13 @@ import {
   addDepositService,
   addWithdrawService,
   getPaymentTransactions,
+  getTaskClaim,
 } from "../../apis/userServices";
 // import mainImage from "../../assets/main_image.jpg";
 // import CountdownBanner from "../../components/CountdownBanner";
 
 const Home = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, fetchUser } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [pin, setPin] = useState("");
   const [showPinModal, setShowPinModal] = useState(false);
@@ -40,6 +41,69 @@ const Home = () => {
   const [error, setError] = useState("");
   const [transaction, setTransaction] = useState([]);
   const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(null);
+
+  function getTimeFromServer() {
+    if (user?.setClaimTime) {
+      // Server se aaya hua timestamp (ISO string ya number)
+      const claimTime = new Date(user.setClaimTime).getTime(); // ✅ timestamp (ms) bana lo
+
+      const elapsed = Math.floor((Date.now() - claimTime) / 1000); // seconds me kitna time beet gaya
+      const remaining = 24 * 60 * 60 - elapsed; // total 24h - elapsed
+
+      if (remaining > 0) {
+        setDisabled(true);
+        setTimeLeft(remaining);
+      } else {
+        setDisabled(false);
+        setTimeLeft(null);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getTimeFromServer();
+    let timer;
+
+    if (timeLeft !== null && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => (prev !== null ? prev - 1 : 0));
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setDisabled(false);
+      setTimeLeft(null);
+    }
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const handleClick = async () => {
+    const data = {
+      walletClaim: 0.11,
+      setClaimTime: Date.now(), // ✅ yahan timestamp save kar
+    };
+    try {
+      const res = await getTaskClaim(data);
+      toast.success(res.message);
+      // console.log(res);
+      await fetchUser(); // ✅ ab user ka naya setClaimTime turant aa jayega
+      getTimeFromServer(); // ✅ dobara se countdown start hoga bina refresh k
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+
+    setDisabled(true);
+    setTimeLeft(24 * 60 * 60); // ✅ direct countdown set kar (seconds me)
+  };
+
+  // Convert seconds -> hh:mm:ss
+  const formatTime = (seconds) => {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
 
   // Form states
   const [editForm, setEditForm] = useState({
@@ -296,6 +360,8 @@ const Home = () => {
     setShowWithDrawModal(false);
   };
 
+  // console.log(",,,,,,,", user);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
       {/* Header */}
@@ -514,13 +580,36 @@ const Home = () => {
           </div>
 
           {/* Daily Task Card */}
-          <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
+          <div
+            className={` bg-gradient-to-br  rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer ${
+              disabled
+                ? "from-yellow-100/20 to-yellow-200/20 border border-yellow-100/30 cursor-not-allowed"
+                : "from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 hover:scale-105"
+            }`}
+            onClick={disabled ? "" : handleClick}
+          >
             <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-yellow-500/30 rounded-xl flex items-center justify-center mb-3">
-                <Clock className="text-yellow-400" size={24} />
+              <div
+                className={`w-20 h-12 ${
+                  disabled ? "bg-yellow-100/30" : "bg-yellow-500/30"
+                }  rounded-xl flex items-center justify-center mb-3`}
+              >
+                {/*<Clock className="text-yellow-400" size={24} />*/}${" "}
+                {(user?.walletClaim).toFixed(2)}
+                {/* $ {12.22} */}
               </div>
-              <h3 className="text-white font-semibold mb-1">Daily Task</h3>
-              <p className="text-yellow-400 text-xs">Complete</p>
+              <h3 className="text-white font-semibold mb-1">
+                {disabled && timeLeft !== null
+                  ? formatTime(timeLeft)
+                  : "Daily Claim"}
+              </h3>
+              <p
+                className={`${
+                  disabled ? "text-yellow-100" : "text-yellow-400"
+                } text-xs`}
+              >
+                Complete
+              </p>
             </div>
           </div>
 
@@ -640,28 +729,32 @@ const Home = () => {
       tx.verficationStatus === "Unverified" ? "bg-purple-500 rounded-full " : ""
     }`}
                         >
-                          <td className="px-4 py-2 ">$ {tx.amount}</td>
-                          <td className="px-4 py-2">{tx.mode}</td>
+                          <td className="px-4 py-2 text-black ">
+                            $ {tx.amount}
+                          </td>
+                          <td className="px-4 py-2 text-black">{tx.mode}</td>
                           <td
-                            className="px-4 py-2 max-w-[160px] truncate"
+                            className="px-4 py-2 max-w-[160px] truncate text-black"
                             title={tx.senderWallet}
                           >
                             {tx.senderWallet}
                           </td>
                           <td
-                            className="px-4 py-2 max-w-[120px] truncate"
+                            className="px-4 py-2 max-w-[120px] truncate text-black"
                             title={tx.transaction || "Applicable in Withdrawal"}
                           >
                             {tx.transaction || "Applicable in Withdrawal"}
                           </td>
                           <td
-                            className="px-4 py-2 max-w-[160px] truncate"
+                            className="px-4 py-2 max-w-[160px] truncate text-black"
                             title={tx.receiveWallet}
                           >
                             {tx.receiveWallet}
                           </td>
-                          <td className="px-4 py-2">{tx.verficationStatus}</td>
-                          <td className="px-4 py-2">
+                          <td className="px-4 py-2 text-black">
+                            {tx.verficationStatus}
+                          </td>
+                          <td className="px-4 py-2 text-black">
                             {new Date(tx.createdAt).toISOString().split("T")[0]}
                           </td>
                         </tr>

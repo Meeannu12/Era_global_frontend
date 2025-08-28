@@ -141,7 +141,6 @@ export const walletAddress = async (data) => {
   }
 };
 
-
 // get user Deposit request by user wiht sponsorId
 export const getAllDepositRequestByUserId = async ({
   sponsorID,
@@ -174,7 +173,6 @@ export const getAllWithdrawRequestByUserId = async ({
   }
 };
 
-
 // get user withdraw request by user wiht sponsorId
 export const getAllEarningCommissionByUserId = async ({
   sponsorID,
@@ -191,15 +189,21 @@ export const getAllEarningCommissionByUserId = async ({
   }
 };
 
-
 // get user withdraw request by user wiht sponsorId
-export const getTeamIncomeBySponsorID = async ({
-  sponsorID,
-}) => {
+export const getTeamIncomeBySponsorID = async ({ sponsorID }) => {
   try {
     const response = await AXIOS.get(
       `/api/v1/users/getTeamIncomFindByUser/${sponsorID}`
     );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTaskClaim = async (data) => {
+  try {
+    const response = await AXIOS.post("/api/v1/users/addTaskClaim", data);
     return response.data;
   } catch (error) {
     throw error;
