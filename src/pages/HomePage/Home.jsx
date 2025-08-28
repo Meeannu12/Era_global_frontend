@@ -608,7 +608,7 @@ const Home = () => {
                   disabled ? "text-yellow-100" : "text-yellow-400"
                 } text-xs`}
               >
-                Complete
+                {disabled ? "Time Remaining to claim again" : "Complete"}
               </p>
             </div>
           </div>
