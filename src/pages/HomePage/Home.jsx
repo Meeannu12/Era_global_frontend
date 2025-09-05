@@ -44,6 +44,8 @@ const Home = () => {
   const [disabled, setDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
 
+  // console.log("user", user);
+
   function getTimeFromServer() {
     if (user?.setClaimTime) {
       // Server se aaya hua timestamp (ISO string ya number)
@@ -214,18 +216,6 @@ const Home = () => {
         return;
       }
 
-      // check user input amount greater of 10 or not
-      if (amount < 10) {
-        toast.error("You can not withdraw as Your earning is less than $10");
-        return;
-      }
-
-      const wall = true;
-      if (wall) {
-        toast.error("Not sufficient Balance in Wallet");
-        return;
-      }
-
       // ✅ check amount grater then wallet amount
 
       if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
@@ -238,7 +228,9 @@ const Home = () => {
         return;
       }
 
-      if (user.walletTeamEarn <= amount) {
+      // console.log("earning amount",user.walletEarning)
+
+      if (user.walletEarning < amount) {
         toast.error("Not sufficient Balance in Wallet");
         return;
       }
@@ -638,13 +630,7 @@ const Home = () => {
               Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              ${" "}
-              {(
-                Number(user?.walletTeamEarn) +
-                Number(user?.walletSelfEarn) +
-                Number(user?.walletRoyalty) +
-                Number(user?.walletReward)
-              ).toFixed(2)}
+              $ {user.walletEarning.toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
