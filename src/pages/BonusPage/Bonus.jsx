@@ -17,8 +17,27 @@ const Bonus = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [directUserIncome, setDirectUserIncome] = React.useState(0);
+  const [levelUserIncome, setLevelUserIncome] = React.useState(0);
+  const fetchTeamIncome = async () => {
+    try {
+      const response = await getTeamIncomeBySponsorID({
+        sponsorID: user.sponsorID,
+      });
+      // console.log(response);
+      setDirectUserIncome(response?.directIncome || 0);
+      setLevelUserIncome(response?.teamIncome || 0);
+    } catch (error) {
+      console.error("Error fetching total count:", error);
+      toast.error(
+        error.response.data.message ||
+          "Something went wrong During Fetching Count"
+      );
+    }
+  };
 
   useEffect(() => {
+    fetchTeamIncome();
     // console.log("shgfvgwj", user);
   }, []);
   const items = [
@@ -392,9 +411,9 @@ const Bonus = () => {
                             <th className="px-4 py-2 border border-slate-600">
                               Royalty Income
                             </th>
-                            {/* <th className="px-4 py-2 border border-slate-600">
-                              Rewards Income
-                            </th> */}
+                            <th className="px-4 py-2 border border-slate-600">
+                              Achieve Income
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -422,9 +441,19 @@ const Bonus = () => {
                               <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.passive}
                               </td>
-                              {/* <td className="px-4 py-2 border border-slate-700 text-center">
-                                {row.reward}
-                              </td> */}
+                              <td
+                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${
+                                  directUserIncome >= row.direct &&
+                                  levelUserIncome >= row.team
+                                    ? "text-green-500"
+                                    : "text-red-500 "
+                                }`}
+                              >
+                                {directUserIncome >= row.direct &&
+                                levelUserIncome >= row.team
+                                  ? "Achieve"
+                                  : "Not Achieve"}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -450,13 +479,13 @@ const Bonus = () => {
                               Total Team Business
                             </th>
                             {/* <th className="px-4 py-2 border border-slate-600">
-                              Total ROI Income
-                            </th> */}
-                            {/* <th className="px-4 py-2 border border-slate-600">
                               Royalty Income
-                            </th> */}
+                              </th> */}
                             <th className="px-4 py-2 border border-slate-600">
                               Rewards Income
+                            </th>
+                            <th className="px-4 py-2 border border-slate-600">
+                              Achieve Income
                             </th>
                           </tr>
                         </thead>
@@ -487,6 +516,20 @@ const Bonus = () => {
                               </td> */}
                               <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.reward}
+                              </td>
+
+                              <td
+                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${
+                                  directUserIncome >= row.direct &&
+                                  levelUserIncome >= row.team
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                                }`}
+                              >
+                                {directUserIncome >= row.direct &&
+                                levelUserIncome >= row.team
+                                  ? "Achieve"
+                                  : "Not Achieve"}
                               </td>
                             </tr>
                           ))}
