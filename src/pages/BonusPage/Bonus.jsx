@@ -412,7 +412,7 @@ const Bonus = () => {
                               Royalty Income
                             </th>
                             <th className="px-4 py-2 border border-slate-600">
-                              Achieve Income
+                              Level Status
                             </th>
                           </tr>
                         </thead>
@@ -451,8 +451,8 @@ const Bonus = () => {
                               >
                                 {directUserIncome >= row.direct &&
                                 levelUserIncome >= row.team
-                                  ? "Achieve"
-                                  : "Not Achieve"}
+                                  ? "Achieved"
+                                  : "Not Achieved"}
                               </td>
                             </tr>
                           ))}
@@ -485,7 +485,7 @@ const Bonus = () => {
                               Rewards Income
                             </th>
                             <th className="px-4 py-2 border border-slate-600">
-                              Achieve Income
+                              Level Status
                             </th>
                           </tr>
                         </thead>
@@ -528,8 +528,8 @@ const Bonus = () => {
                               >
                                 {directUserIncome >= row.direct &&
                                 levelUserIncome >= row.team
-                                  ? "Achieve"
-                                  : "Not Achieve"}
+                                  ? "Achieved"
+                                  : "Not Achieved"}
                               </td>
                             </tr>
                           ))}
