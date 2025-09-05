@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { getTeamIncomeBySponsorID } from "../../apis/userServices";
 
 const Bonus = () => {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ const Bonus = () => {
       const response = await getTeamIncomeBySponsorID({
         sponsorID: user.sponsorID,
       });
-      // console.log(response);
+
+      console.log(response);
       setDirectUserIncome(response?.directIncome || 0);
       setLevelUserIncome(response?.teamIncome || 0);
     } catch (error) {
@@ -124,31 +126,31 @@ const Bonus = () => {
   const data = [
     {
       level: "L1",
-      direct: "300$",
-      team: "300$",
+      direct: 300,
+      team: 300,
       roi: "100% of ROI",
       passive: "10$ Monthly",
       reward: "0",
     },
     {
       level: "L2",
-      direct: "350$",
-      team: "700$",
+      direct: 350,
+      team: 700,
       roi: "0.50%",
       passive: "50$ Monthly",
       reward: "50$",
     },
     {
       level: "L3",
-      direct: "500$",
-      team: "2000$",
+      direct: 500,
+      team: 2000,
       roi: "0.70%",
       passive: "100$ Monthly",
       reward: "100$",
     },
     {
       level: "L4",
-      direct: "600$",
+      direct: 600,
       team: "9000$",
       roi: "1%",
       passive: "300$ Monthly",
@@ -156,48 +158,48 @@ const Bonus = () => {
     },
     {
       level: "L5",
-      direct: "1000$",
-      team: "22000$",
+      direct: 1000,
+      team: 22000,
       roi: "1.5%",
       passive: "600$ Monthly",
       reward: "1100$",
     },
     {
       level: "L6",
-      direct: "2000$",
-      team: "55000$",
+      direct: 2000,
+      team: 55000,
       roi: "1.75%",
       passive: "1100$ Monthly",
       reward: "3300$",
     },
     {
       level: "L7",
-      direct: "3000$",
-      team: "1.10 lac $",
+      direct: 3000,
+      team: 110000,
       roi: "2%",
       passive: "2500$ Monthly",
       reward: "10000$",
     },
     {
       level: "L8",
-      direct: "4000$",
-      team: "5 lac $",
+      direct: 4000,
+      team: 500000,
       roi: "2.25%",
       passive: "4000$ Monthly",
       reward: "25000$",
     },
     {
       level: "L9",
-      direct: "7000$",
-      team: "15 lac $",
+      direct: 7000,
+      team: 1500000,
       roi: "2.5%",
       passive: "11000$ Monthly",
       reward: "250000$",
     },
     {
       level: "L10",
-      direct: "15000$",
-      team: "50 lac $",
+      direct: 15000,
+      team: 5000000,
       roi: "3%",
       passive: "21000$ Monthly",
       reward: "1100000$",
@@ -430,10 +432,10 @@ const Bonus = () => {
                                 {row.level}
                               </td>
                               <td className="px-4 py-2 border border-slate-700 text-center">
-                                {row.direct}
+                                {row.direct} $
                               </td>
                               <td className="px-4 py-2 border border-slate-700 text-center">
-                                {row.team}
+                                {row.team} $
                               </td>
                               {/* <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.roi}
@@ -443,14 +445,17 @@ const Bonus = () => {
                               </td>
                               <td
                                 className={`px-4 py-2 border border-slate-700 text-center font-semibold ${
-                                  directUserIncome >= row.direct &&
-                                  levelUserIncome >= row.team
+                                  Number(directUserIncome) >=
+                                    Number(row.direct) &&
+                                  Number(levelUserIncome) >= Number(row.team)
                                     ? "text-green-500"
                                     : "text-red-500 "
                                 }`}
                               >
-                                {directUserIncome >= row.direct &&
-                                levelUserIncome >= row.team
+                                {Number(directUserIncome || 0) >=
+                                  Number(row?.direct || 0) &&
+                                Number(levelUserIncome || 0) >=
+                                  Number(row?.team || 0)
                                   ? "Achieved"
                                   : "Not Achieved"}
                               </td>
@@ -503,10 +508,10 @@ const Bonus = () => {
                                 {row.level}
                               </td>
                               <td className="px-4 py-2 border border-slate-700 text-center">
-                                {row.direct}
+                                {row.direct} $
                               </td>
                               <td className="px-4 py-2 border border-slate-700 text-center">
-                                {row.team}
+                                {row.team} $
                               </td>
                               {/* <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.roi}
