@@ -230,7 +230,7 @@ const Home = () => {
 
       // console.log("earning amount",user.walletEarning)
 
-      if (user.walletEarning < amount) {
+      if (user.walletEarning < amount + amount * 0.1) {
         toast.error("Not sufficient Balance in Wallet");
         return;
       }
