@@ -27,11 +27,7 @@ const Wallet = () => {
         />
         <div className="relative text-center">
           <p className="text-3xl font-bold">{`$ ${(
-            Number(user?.walletTeamEarn) +
-            Number(user?.walletSelfEarn) +
-            Number(user?.walletRoyalty) +
-            Number(user?.walletDeposit) +
-            Number(user?.walletReward)
+            Number(user?.walletEarning) + Number(user?.walletDeposit)
           ).toFixed(2)}`}</p>
           <p className="text-sm">Account Balance</p>
         </div>
@@ -61,15 +57,7 @@ const Wallet = () => {
         </h2>
         <div className="flex justify-between mb-2">
           <p>Total Income</p>
-          <p className="text-green-400">
-            +{" "}
-            {`$ ${(
-              Number(user?.walletTeamEarn) +
-              Number(user?.walletSelfEarn) +
-              Number(user?.walletRoyalty) +
-              Number(user?.walletReward)
-            ).toFixed(2)}`}
-          </p>
+          <p className="text-green-400">+ $ {user.walletEarning.toFixed(2)}</p>
         </div>
         <div className="flex justify-between mb-2">
           <p>Total Withdraw</p>
@@ -78,12 +66,10 @@ const Wallet = () => {
         <div className="flex justify-between mt-4">
           <div>
             <p className="text-sm text-gray-400">Earning Wallet</p>
-            <p className="text-green-400 text-lg">{`$ ${(
-              Number(user?.walletTeamEarn) +
-              Number(user?.walletSelfEarn) +
-              Number(user?.walletRoyalty) +
-              Number(user?.walletReward)
-            ).toFixed(2)}`}</p>
+            <p className="text-green-400 text-lg">
+              {" "}
+              $ {user.walletEarning.toFixed(2)}
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-400">Assets Wallet</p>
