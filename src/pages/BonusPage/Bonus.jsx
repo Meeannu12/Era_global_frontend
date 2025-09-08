@@ -259,12 +259,7 @@ const Bonus = () => {
                 </span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold text-white mb-2 tracking-tight">
-                {`$ ${(
-                  Number(user?.walletTeamEarn) +
-                  Number(user?.walletSelfEarn) +
-                  Number(user?.walletRoyalty) +
-                  Number(user?.walletReward)
-                ).toFixed(2)}`}
+                $ {user.walletEarning.toFixed(2)}
               </h1>
               <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mx-auto sm:mx-0"></div>
             </div>
