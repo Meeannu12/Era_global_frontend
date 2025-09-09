@@ -797,7 +797,7 @@ const Home = () => {
 
       {/* Edit WithDraw Modal */}
       {showWithDrawModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-99">
           <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-slate-700">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -812,7 +812,7 @@ const Home = () => {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-3 space-y-4">
               <div>
                 <p className="p-0 text-sm text-red-500">
                   You withdraw on Wednesday Only
@@ -950,7 +950,7 @@ const Home = () => {
 
       {/* Amount Deposit Modal */}
       {showDepositModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-99">
           <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-slate-700">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
