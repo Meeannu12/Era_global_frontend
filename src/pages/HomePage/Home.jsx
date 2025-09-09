@@ -112,6 +112,7 @@ const Home = () => {
     userID: user.sponsorID || "",
     walletAddress: user.walletAddress || "",
     amount: "",
+    walletType: "",
     transaction: "",
     receive: "0xb9EDA4F6f890D914AEE8D2326E67a713646f763E",
   });
@@ -198,42 +199,80 @@ const Home = () => {
     // setIsLoading(false)
   };
 
+
   // withDraw api call here
   const handelSubmitWithdraw = async () => {
     const amount = Number(editForm.amount);
     try {
-      const today = new Date().getDay(); // 0=Sunday, 1=Monday, ... 3=Wednesday
-
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
+      const dateOfMonth = today.getDate(); // e.g. 1,2,3...5
+      // const dayOfWeek = 3 // 0=Sunday ... 3=Wednesday
+      // const dateOfMonth = 5; // e.g. 1,2,3...5
       // 1️⃣ Empty or zero check
       if (!amount) {
         toast.error("Please enter amount");
         return;
       }
-      // check today is wednesday or not
-      if (today !== 3) {
-        // setError("❌ You can only submit this form on Wednesday!");
-        toast.error("Request will be processed on Wednesday");
-        return;
-      }
 
-      // ✅ check amount grater then wallet amount
-
+      // check wallet Address is exist or not
       if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
         toast.error("Please add wallet address go to profile");
         return;
       }
 
+      // ✅ check amount Withdrawal Limit
       if (amount < 10) {
         toast.error("minimum Withdrawal Limit 10");
         return;
       }
 
-      // console.log("earning amount",user.walletEarning)
-
-      if (user.walletEarning < amount + amount * 0.1) {
+      // Check sufficient balance
+      if (user.walletEarning < amount) {
         toast.error("Not sufficient Balance in Wallet");
         return;
       }
+
+      // 5️⃣ Check conditions for withdrawal
+
+      if (dayOfWeek === 3 && dateOfMonth === 5) {
+        // ✅ Agar Wednesday + 5th hai → sab wallets allowed
+        console.log("Allowed: Any wallet (including royalty)");
+      } else if (dayOfWeek === 3) {
+        // ✅ Sirf Wednesday hai
+        if (editForm.walletType === "royaltyWallet") {
+          toast.error("Royalty Wallet withdrawal is only allowed on 5th");
+          return;
+        }
+
+        const remainingBalance = user.walletEarning - amount;
+        if (remainingBalance < user.walletRoyalty) {
+          toast.error(
+            `You must keep at least ${user.walletRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
+          );
+          return;
+        }
+      } else if (dateOfMonth === 5) {
+        // ✅ Sirf 5th hai
+        if (editForm.walletType !== "royaltyWallet") {
+          toast.error("Only Royalty Wallet withdrawal is allowed on 5th");
+          return;
+        }
+
+        // 🛑 Check balance in royalty wallet
+        if (amount > user.walletRoyalty) {
+          toast.error("Insufficient Royalty Wallet Balance");
+          return;
+        }
+      } else {
+        // ❌ Na Wednesday hai, na 5 tareekh
+        toast.error(
+          "Withdrawals are only allowed on Wednesdays or 5th of the month"
+        );
+        return;
+      }
+
+      // console.log("earning amount",user.walletEarning)
 
       const data = {
         sponsorID: editForm.userID,
@@ -256,6 +295,7 @@ const Home = () => {
       setEditForm((prev) => ({
         ...prev, // baaki fields as it is
         amount: "", // sirf amount reset
+        walletType: "", // sirf amount reset
       }));
       setShowWithDrawModal(false);
       setIsLoading(false);
@@ -798,6 +838,7 @@ const Home = () => {
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   ERA Global TWT BEP20 Wallet is.
@@ -829,6 +870,7 @@ const Home = () => {
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   Your Wallet Address
@@ -844,7 +886,38 @@ const Home = () => {
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
-              {/* <p className="p-0" m-0></p> */}
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Select Wallet
+                </label>
+                <select
+                  value={editForm.walletType}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({
+                      ...prev,
+                      walletType: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-blue-400 transition-colors"
+                >
+                  <option value="" disabled>
+                    -- Select Wallet --
+                  </option>
+                  <option value="royaltyWallet">
+                    Royalty Income ({user.walletRoyalty.toFixed(1)})
+                  </option>
+                  <option value="selfWallet">
+                    Earning Income (
+                    {(
+                      Number(user.walletSelfEarn) +
+                      Number(user.walletTeamEarn) +
+                      Number(user.walletReward)
+                    ).toFixed(1)}
+                    )
+                  </option>
+                </select>
+              </div>
 
               <div className="flex gap-3 pt-1">
                 <button
