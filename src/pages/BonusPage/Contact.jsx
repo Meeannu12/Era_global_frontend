@@ -277,7 +277,7 @@ const Contact = ({
               </li>
               <li>
                 • Withdrawal will be only on Wednesday and Transfer of amount
-                may take 24 hours to 48 hours (1-2 Days)
+                may take 24 hours to 48 hours
               </li>
               <li>
                 • Royalty Income can be withdrawn only on 5th of every month
