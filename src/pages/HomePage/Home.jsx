@@ -713,7 +713,7 @@ const Home = () => {
             <h3 className="text-purple-300 text-sm font-medium mb-2">
               Month Earning (USDT)
             </h3>
-            <p className="text-white text-3xl font-bold">{walletDetails.currentMonthTotal}</p>
+            <p className="text-white text-3xl font-bold">{walletDetails.currentMonthTotal.toFixed(2)}</p>
             <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
               <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
             </div>
