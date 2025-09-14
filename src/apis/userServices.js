@@ -209,3 +209,12 @@ export const getTaskClaim = async (data) => {
     throw error;
   }
 };
+
+export const getWalletDetails = async () => {
+  try {
+    const response = await AXIOS.get("/api/v1/payment/getWalletDetails");
+    return response.data.Datalist;
+  } catch (error) {
+    throw error;
+  }
+};

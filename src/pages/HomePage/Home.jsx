@@ -26,6 +26,7 @@ import {
   addWithdrawService,
   getPaymentTransactions,
   getTaskClaim,
+  getWalletDetails,
 } from "../../apis/userServices";
 // import mainImage from "../../assets/main_image.jpg";
 // import CountdownBanner from "../../components/CountdownBanner";
@@ -40,11 +41,25 @@ const Home = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [error, setError] = useState("");
   const [transaction, setTransaction] = useState([]);
+  const [walletDetails, setWalletDetails] = useState({
+    totalAmount: 0,
+    currentMonthTotal: 0,
+    totalWithDrawal: 0,
+    totalRoyalty: 0,
+  });
+
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
 
-  // console.log("user", user);
+  async function getDetails() {
+    const details = await getWalletDetails();
+    // console.log("details", details);
+    // Assuming response has Datalist
+    if (details) {
+      setWalletDetails(details);
+    }
+  }
 
   function getTimeFromServer() {
     if (user?.setClaimTime) {
@@ -182,6 +197,10 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getDetails();
+  }, []);
+
+  useEffect(() => {
     getPayments();
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
@@ -198,7 +217,6 @@ const Home = () => {
     setShowDepositModal(true);
     // setIsLoading(false)
   };
-
 
   // withDraw api call here
   const handelSubmitWithdraw = async () => {
@@ -663,14 +681,14 @@ const Home = () => {
 
       {/* Balance Cards */}
       <div className="px-4 mb-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Earnings Card */}
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-2">
+          {/* Total Earnings Card */}
           <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-red-300 text-sm font-medium mb-2">
-              Earning (USDT)
+              Total Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              $ {user.walletEarning.toFixed(2)}
+              $ {walletDetails.totalAmount.toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
@@ -684,6 +702,43 @@ const Home = () => {
             </h3>
             <p className="text-white text-3xl font-bold">
               $ {user.walletDeposit}
+            </p>
+            <div className="mt-3 h-1 bg-green-500/30 rounded-full">
+              <div className="h-full bg-green-500 rounded-full w-4/5"></div>
+            </div>
+          </div>
+
+          {/* This Month Earning card */}
+          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
+            <h3 className="text-purple-300 text-sm font-medium mb-2">
+              Month Earning (USDT)
+            </h3>
+            <p className="text-white text-3xl font-bold">{walletDetails.currentMonthTotal}</p>
+            <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
+              <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
+            </div>
+          </div>
+
+          {/* Earnings Card */}
+          <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
+            <h3 className="text-red-300 text-sm font-medium mb-2">
+              Total WithDraw (USDT)
+            </h3>
+            <p className="text-white text-3xl font-bold">
+              $ {walletDetails.totalWithDrawal}
+            </p>
+            <div className="mt-3 h-1 bg-red-500/30 rounded-full">
+              <div className="h-full bg-red-500 rounded-full w-3/4"></div>
+            </div>
+          </div>
+
+          {/* Assets Card */}
+          <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 rounded-2xl p-6 backdrop-blur-sm">
+            <h3 className="text-green-300 text-sm font-medium mb-2">
+              Balance (USDT)
+            </h3>
+            <p className="text-white text-3xl font-bold">
+              $ {user.walletEarning.toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-green-500/30 rounded-full">
               <div className="h-full bg-green-500 rounded-full w-4/5"></div>

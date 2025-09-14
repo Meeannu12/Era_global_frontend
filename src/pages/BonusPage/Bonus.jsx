@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
-import { getTeamIncomeBySponsorID } from "../../apis/userServices";
+import {
+  getTeamIncomeBySponsorID,
+  getWalletDetails,
+} from "../../apis/userServices";
 
 const Bonus = () => {
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ const Bonus = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [directUserIncome, setDirectUserIncome] = React.useState(0);
   const [levelUserIncome, setLevelUserIncome] = React.useState(0);
+  const [royalty, setRoyalty] = useState(0);
   const fetchTeamIncome = async () => {
     try {
       const response = await getTeamIncomeBySponsorID({
@@ -38,7 +42,17 @@ const Bonus = () => {
     }
   };
 
+  async function getDetails() {
+    const details = await getWalletDetails();
+    // console.log("details", details);
+    // Assuming response has Datalist
+    if (details) {
+      setRoyalty(details?.totalRoyalty);
+    }
+  }
+
   useEffect(() => {
+    getDetails();
     fetchTeamIncome();
     // console.log("shgfvgwj", user);
   }, []);
@@ -66,7 +80,7 @@ const Bonus = () => {
     },
     {
       name: "Royalty Income",
-      amount: `$ ${(user?.walletRoyalty).toFixed(2)}`,
+      amount: `$ ${royalty.toFixed(2)}`,
       icon: <Crown className="w-5 h-5" />,
       gradient: "from-amber-500 to-orange-600",
       shadowColor: "shadow-amber-500/25",
