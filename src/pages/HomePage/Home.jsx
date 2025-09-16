@@ -46,6 +46,7 @@ const Home = () => {
     currentMonthTotal: 0,
     totalWithDrawal: 0,
     totalRoyalty: 0,
+    totalPreviourRoyalty: 0,
   });
 
   const navigate = useNavigate();
@@ -963,7 +964,8 @@ const Home = () => {
                     -- Select Wallet --
                   </option>
                   <option value="royaltyWallet">
-                    Royalty Income ({user.walletRoyalty.toFixed(1)})
+                    Royalty Income (
+                    {walletDetails.totalPreviourRoyalty.toFixed(1)})
                   </option>
                   <option value="selfWallet">
                     Earning Income (
