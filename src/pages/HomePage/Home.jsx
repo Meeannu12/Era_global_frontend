@@ -265,9 +265,9 @@ const Home = () => {
         }
 
         const remainingBalance = user.walletEarning - amount;
-        if (remainingBalance < walletDetails.totalRoyalty) {
+        if (remainingBalance < walletDetails.totalPreviourRoyalty) {
           toast.error(
-            `You must keep at least $ ${walletDetails.totalRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
+            `You must keep at least $ ${walletDetails.totalPreviourRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
           );
           return;
         }
@@ -279,7 +279,7 @@ const Home = () => {
         }
 
         // 🛑 Check balance in royalty wallet
-        if (amount > walletDetails.totalRoyalty) {
+        if (amount > walletDetails.totalPreviourRoyalty) {
           toast.error("Insufficient Royalty Wallet Balance");
           return;
         }
