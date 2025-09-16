@@ -264,9 +264,9 @@ const Home = () => {
         }
 
         const remainingBalance = user.walletEarning - amount;
-        if (remainingBalance < user.walletRoyalty) {
+        if (remainingBalance < walletDetails.totalRoyalty) {
           toast.error(
-            `You must keep at least ${user.walletRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
+            `You must keep at least $ ${walletDetails.totalRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
           );
           return;
         }
@@ -278,7 +278,7 @@ const Home = () => {
         }
 
         // 🛑 Check balance in royalty wallet
-        if (amount > user.walletRoyalty) {
+        if (amount > walletDetails.totalRoyalty) {
           toast.error("Insufficient Royalty Wallet Balance");
           return;
         }
@@ -295,6 +295,7 @@ const Home = () => {
       const data = {
         sponsorID: editForm.userID,
         senderWallet: editForm.receive,
+        walletType: editForm.walletType,
         amount: editForm.amount,
         receiveWallet: editForm.walletAddress,
       };
@@ -713,7 +714,9 @@ const Home = () => {
             <h3 className="text-purple-300 text-sm font-medium mb-2">
               Month Earning (USDT)
             </h3>
-            <p className="text-white text-3xl font-bold">{walletDetails.currentMonthTotal.toFixed(2)}</p>
+            <p className="text-white text-3xl font-bold">
+              $ {walletDetails.currentMonthTotal.toFixed(2)}
+            </p>
             <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
               <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
             </div>
@@ -873,8 +876,8 @@ const Home = () => {
                   You withdraw on Wednesday Only
                 </p>
                 <p className="text-sm text-red-500">
-                  You can request for Minimum $10 for withdrawal from
-                  your earning wallet
+                  You can request for Minimum $10 for withdrawal from your
+                  earning wallet
                 </p>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   User ID
