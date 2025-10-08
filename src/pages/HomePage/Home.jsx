@@ -22,6 +22,7 @@ import Contact from "../BonusPage/Contact";
 import toast from "react-hot-toast";
 import {
   activePinService,
+  addCalculateRewarincome,
   addDepositService,
   addWithdrawService,
   getPaymentTransactions,
@@ -79,6 +80,9 @@ const Home = () => {
       }
     }
   }
+
+
+
 
   useEffect(() => {
     getTimeFromServer();
@@ -197,7 +201,14 @@ const Home = () => {
     setTransaction(response.data);
   };
 
+
+  const getReward = async (id) => {
+    const response = await addCalculateRewarincome(id)
+    console.log(response)
+  }
+
   useEffect(() => {
+    getReward(user.sponsorID)
     getDetails();
   }, []);
 
@@ -542,9 +553,8 @@ const Home = () => {
             {carouselImages.map((img, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
+                  }`}
               >
                 {img.type === "video" ? (
                   <video
@@ -602,9 +612,8 @@ const Home = () => {
           {/* Activate Card */}
           <div
             onClick={!user.pin ? openPinModal : undefined}
-            className={`bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform ${
-              !user.pin ? "cursor-pointer" : "cursor-default opacity-50"
-            }`}
+            className={`bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform ${!user.pin ? "cursor-pointer" : "cursor-default opacity-50"
+              }`}
           >
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-green-500/30 rounded-xl flex items-center justify-center mb-3">
@@ -633,18 +642,16 @@ const Home = () => {
 
           {/* Daily Task Card */}
           <div
-            className={` bg-gradient-to-br  rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer ${
-              disabled
-                ? "from-yellow-100/20 to-yellow-200/20 border border-yellow-100/30 cursor-not-allowed"
-                : "from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 hover:scale-105"
-            }`}
+            className={` bg-gradient-to-br  rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer ${disabled
+              ? "from-yellow-100/20 to-yellow-200/20 border border-yellow-100/30 cursor-not-allowed"
+              : "from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 hover:scale-105"
+              }`}
             onClick={disabled ? "" : handleClick}
           >
             <div className="flex flex-col items-center text-center">
               <div
-                className={`w-20 h-12 ${
-                  disabled ? "bg-yellow-100/30" : "bg-yellow-500/30"
-                }  rounded-xl flex items-center justify-center mb-3`}
+                className={`w-20 h-12 ${disabled ? "bg-yellow-100/30" : "bg-yellow-500/30"
+                  }  rounded-xl flex items-center justify-center mb-3`}
               >
                 {/*<Clock className="text-yellow-400" size={24} />*/}${" "}
                 {(user?.walletClaim).toFixed(2)}
@@ -656,9 +663,8 @@ const Home = () => {
                   : "Daily Claim"}
               </h3>
               <p
-                className={`${
-                  disabled ? "text-yellow-100" : "text-yellow-400"
-                } text-xs`}
+                className={`${disabled ? "text-yellow-100" : "text-yellow-400"
+                  } text-xs`}
               >
                 {disabled ? "Time Remaining to claim again" : "Complete"}
               </p>
@@ -804,15 +810,13 @@ const Home = () => {
                         <tr
                           key={tx._id}
                           className={`border-b border-gray-700 rounded-2xl
-                        ${
-                          tx.verficationStatus === "Verified"
-                            ? "bg-green-500 rounded-full "
-                            : ""
-                        }
+                        ${tx.verficationStatus === "Verified"
+                              ? "bg-green-500 rounded-full "
+                              : ""
+                            }
     ${tx.verficationStatus === "Rejected" ? "bg-red-500 " : ""}
-    ${
-      tx.verficationStatus === "Unverified" ? "bg-purple-500 rounded-full " : ""
-    }`}
+    ${tx.verficationStatus === "Unverified" ? "bg-purple-500 rounded-full " : ""
+                            }`}
                         >
                           <td className="px-4 py-2 text-black ">
                             $ {tx.amount}

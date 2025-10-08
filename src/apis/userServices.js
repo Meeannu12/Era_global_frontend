@@ -218,3 +218,14 @@ export const getWalletDetails = async () => {
     throw error;
   }
 };
+
+
+export const addCalculateRewarincome = async (id) => {
+  try {
+    const response = await AXIOS.get(`/api/v1/payment/addCalculateRewarincome/${id}`);
+    return response.data;
+
+  } catch (error) {
+    throw error;
+  }
+}
