@@ -210,6 +210,18 @@ export const getTaskClaim = async (data) => {
   }
 };
 
+
+
+export const addCalculateRewarincome = async (id) => {
+  try {
+    const response = await AXIOS.get(`/api/v1/users/addCalculateRewarincome/${id}`);
+    return response.data;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getWalletDetails = async () => {
   try {
     const response = await AXIOS.get("/api/v1/payment/getWalletDetails");
@@ -220,12 +232,3 @@ export const getWalletDetails = async () => {
 };
 
 
-export const addCalculateRewarincome = async (id) => {
-  try {
-    const response = await AXIOS.get(`/api/v1/payment/addCalculateRewarincome/${id}`);
-    return response.data;
-
-  } catch (error) {
-    throw error;
-  }
-}
