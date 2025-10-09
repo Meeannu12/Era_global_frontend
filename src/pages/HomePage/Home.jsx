@@ -689,7 +689,7 @@ const Home = () => {
 
       {/* Balance Cards */}
       <div className="px-4 mb-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-2">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-2">
           {/* Total Earnings Card */}
           <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-red-300 text-sm font-medium mb-2">
@@ -756,7 +756,7 @@ const Home = () => {
           </div>
 
           {/* Today Earning card */}
-          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
+          {/* <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-purple-300 text-sm font-medium mb-2">
               Today (USDT)
             </h3>
@@ -764,7 +764,7 @@ const Home = () => {
             <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
               <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
