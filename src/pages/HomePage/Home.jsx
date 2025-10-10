@@ -628,7 +628,7 @@ const Home = () => {
           <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
             <div
               className="flex flex-col items-center text-center"
-              onClick={() => handleWithDrawClick()}
+              // onClick={() => handleWithDrawClick()}
             >
               <div className="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center mb-3">
                 <ArrowDown className="text-blue-400" size={24} />
@@ -966,8 +966,8 @@ const Home = () => {
                     -- Select Wallet --
                   </option>
                   <option value="royaltyWallet">
-                    Royalty Income (
-                    {walletDetails.totalPreviourRoyalty.toFixed(1)})
+                    {/* Royalty Income (
+                    {walletDetails.totalPreviourRoyalty.toFixed(1)}) */}
                   </option>
                   <option value="selfWallet">
                     Earning Income (
