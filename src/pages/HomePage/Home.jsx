@@ -50,11 +50,11 @@ const Home = () => {
 
   async function getDetails() {
     const details = await getWalletDetails();
-    console.log("details", details);
+    // console.log("details", details);
     // Assuming response has Datalist
-    // if (details) {
-    //   settotalWithDrawal(details);
-    // }
+    if (details) {
+      settotalWithDrawal(details.totalWithDrawal);
+    }
   }
 
   function getTimeFromServer() {
@@ -687,7 +687,7 @@ const Home = () => {
 
       {/* Balance Cards */}
       <div className="px-4 mb-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-2">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-2">
           {/* Total Earnings Card */}
           <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-red-300 text-sm font-medium mb-2">
@@ -715,17 +715,17 @@ const Home = () => {
           </div>
 
           {/* This Month Earning card */}
-          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
+          {/* <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <h3 className="text-purple-300 text-sm font-medium mb-2">
               Month Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              {/* $ {walletDetails.currentMonthTotal.toFixed(2)} */}
+               $ {user.walletDeposit}
             </p>
             <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
               <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
             </div>
-          </div>
+          </div> */}
 
           {/* Earnings Card */}
           <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-2xl p-6 backdrop-blur-sm">
@@ -733,7 +733,7 @@ const Home = () => {
               Total WithDraw (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              {/* $ {walletDetails.totalWithDrawal} */}
+              $ {totalWithDrawal}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
