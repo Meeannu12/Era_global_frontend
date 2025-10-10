@@ -37,7 +37,7 @@ const Bonus = () => {
       console.error("Error fetching total count:", error);
       toast.error(
         error.response.data.message ||
-          "Something went wrong During Fetching Count"
+        "Something went wrong During Fetching Count"
       );
     }
   };
@@ -80,7 +80,7 @@ const Bonus = () => {
     },
     {
       name: "Royalty Income",
-      amount: `$ ${royalty.toFixed(2)}`,
+      amount: `$ ${(user?.walletRoyalty).toFixed(2)}`,
       icon: <Crown className="w-5 h-5" />,
       gradient: "from-amber-500 to-orange-600",
       shadowColor: "shadow-amber-500/25",
@@ -165,7 +165,7 @@ const Bonus = () => {
     {
       level: "L4",
       direct: 600,
-      team: "9000$",
+      team: "9000",
       roi: "1%",
       passive: "300$ Monthly",
       reward: "600$",
@@ -431,11 +431,10 @@ const Bonus = () => {
                           {data.map((row, i) => (
                             <tr
                               key={i}
-                              className={`${
-                                i % 2 === 0
+                              className={`${i % 2 === 0
                                   ? "bg-slate-800/50"
                                   : "bg-slate-900/50"
-                              } text-slate-200`}
+                                } text-slate-200`}
                             >
                               <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.level}
@@ -453,17 +452,16 @@ const Bonus = () => {
                                 {row.passive}
                               </td>
                               <td
-                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${
-                                  Number(directUserIncome) >=
+                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${Number(directUserIncome) >=
                                     Number(row.direct) &&
-                                  Number(levelUserIncome) >= Number(row.team)
+                                    Number(levelUserIncome) >= Number(row.team)
                                     ? "text-green-500"
                                     : "text-red-500 "
-                                }`}
+                                  }`}
                               >
                                 {Number(directUserIncome || 0) >=
                                   Number(row?.direct || 0) &&
-                                Number(levelUserIncome || 0) >=
+                                  Number(levelUserIncome || 0) >=
                                   Number(row?.team || 0)
                                   ? "Achieved"
                                   : "Not Achieved"}
@@ -507,11 +505,10 @@ const Bonus = () => {
                           {data.map((row, i) => (
                             <tr
                               key={i}
-                              className={`${
-                                i % 2 === 0
+                              className={`${i % 2 === 0
                                   ? "bg-slate-800/50"
                                   : "bg-slate-900/50"
-                              } text-slate-200`}
+                                } text-slate-200`}
                             >
                               <td className="px-4 py-2 border border-slate-700 text-center">
                                 {row.level}
@@ -533,15 +530,14 @@ const Bonus = () => {
                               </td>
 
                               <td
-                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${
-                                  directUserIncome >= row.direct &&
-                                  levelUserIncome >= row.team
+                                className={`px-4 py-2 border border-slate-700 text-center font-semibold ${directUserIncome >= row.direct &&
+                                    levelUserIncome >= row.team
                                     ? "text-green-500"
                                     : "text-red-500"
-                                }`}
+                                  }`}
                               >
                                 {directUserIncome >= row.direct &&
-                                levelUserIncome >= row.team
+                                  levelUserIncome >= row.team
                                   ? "Achieved"
                                   : "Not Achieved"}
                               </td>
