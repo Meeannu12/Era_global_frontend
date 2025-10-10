@@ -273,7 +273,7 @@ const Bonus = () => {
                 </span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold text-white mb-2 tracking-tight">
-                $ {user.walletEarning.toFixed(2)}
+                $ {user.totalEarning.toFixed(2)}
               </h1>
               <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mx-auto sm:mx-0"></div>
             </div>
@@ -432,8 +432,8 @@ const Bonus = () => {
                             <tr
                               key={i}
                               className={`${i % 2 === 0
-                                  ? "bg-slate-800/50"
-                                  : "bg-slate-900/50"
+                                ? "bg-slate-800/50"
+                                : "bg-slate-900/50"
                                 } text-slate-200`}
                             >
                               <td className="px-4 py-2 border border-slate-700 text-center">
@@ -453,10 +453,10 @@ const Bonus = () => {
                               </td>
                               <td
                                 className={`px-4 py-2 border border-slate-700 text-center font-semibold ${Number(directUserIncome) >=
-                                    Number(row.direct) &&
-                                    Number(levelUserIncome) >= Number(row.team)
-                                    ? "text-green-500"
-                                    : "text-red-500 "
+                                  Number(row.direct) &&
+                                  Number(levelUserIncome) >= Number(row.team)
+                                  ? "text-green-500"
+                                  : "text-red-500 "
                                   }`}
                               >
                                 {Number(directUserIncome || 0) >=
@@ -506,8 +506,8 @@ const Bonus = () => {
                             <tr
                               key={i}
                               className={`${i % 2 === 0
-                                  ? "bg-slate-800/50"
-                                  : "bg-slate-900/50"
+                                ? "bg-slate-800/50"
+                                : "bg-slate-900/50"
                                 } text-slate-200`}
                             >
                               <td className="px-4 py-2 border border-slate-700 text-center">
@@ -531,9 +531,9 @@ const Bonus = () => {
 
                               <td
                                 className={`px-4 py-2 border border-slate-700 text-center font-semibold ${directUserIncome >= row.direct &&
-                                    levelUserIncome >= row.team
-                                    ? "text-green-500"
-                                    : "text-red-500"
+                                  levelUserIncome >= row.team
+                                  ? "text-green-500"
+                                  : "text-red-500"
                                   }`}
                               >
                                 {directUserIncome >= row.direct &&
