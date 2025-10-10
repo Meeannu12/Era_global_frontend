@@ -42,13 +42,7 @@ const Home = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [error, setError] = useState("");
   const [transaction, setTransaction] = useState([]);
-  const [walletDetails, setWalletDetails] = useState({
-    totalAmount: 0,
-    currentMonthTotal: 0,
-    totalWithDrawal: 0,
-    totalRoyalty: 0,
-    totalPreviourRoyalty: 0,
-  });
+  const [totalWithDrawal, settotalWithDrawal] = useState(0);
 
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
@@ -56,11 +50,11 @@ const Home = () => {
 
   async function getDetails() {
     const details = await getWalletDetails();
-    // console.log("details", details);
+    console.log("details", details);
     // Assuming response has Datalist
-    if (details) {
-      setWalletDetails(details);
-    }
+    // if (details) {
+    //   settotalWithDrawal(details);
+    // }
   }
 
   function getTimeFromServer() {
@@ -231,107 +225,111 @@ const Home = () => {
   };
 
   // withDraw api call here
+  // const handelSubmitWithdraw = async () => {
+  //   const amount = Number(editForm.amount);
+  //   try {
+  //     const today = new Date();
+  //     const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
+  //     const dateOfMonth = today.getDate(); // e.g. 1,2,3...5
+  //     // const dayOfWeek = 3 // 0=Sunday ... 3=Wednesday
+  //     // const dateOfMonth = 5; // e.g. 1,2,3...5
+  //     // 1️⃣ Empty or zero check
+  //     if (!amount) {
+  //       toast.error("Please enter amount");
+  //       return;
+  //     }
+
+  //     // check wallet Address is exist or not
+  //     if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
+  //       toast.error("Please add wallet address go to profile");
+  //       return;
+  //     }
+
+  //     // ✅ check amount Withdrawal Limit
+  //     if (amount < 10) {
+  //       toast.error("minimum Withdrawal Limit 10");
+  //       return;
+  //     }
+
+  //     // Check sufficient balance
+  //     if (user.walletEarning < amount) {
+  //       toast.error("Not sufficient Balance in Wallet");
+  //       return;
+  //     }
+
+  //     // 5️⃣ Check conditions for withdrawal
+
+  //     if (dayOfWeek === 3 && dateOfMonth === 5) {
+  //       // ✅ Agar Wednesday + 5th hai → sab wallets allowed
+  //       console.log("Allowed: Any wallet (including royalty)");
+  //     } else if (dayOfWeek === 3) {
+  //       // ✅ Sirf Wednesday hai
+  //       if (editForm.walletType === "royaltyWallet") {
+  //         toast.error("Royalty Wallet withdrawal is only allowed on 5th");
+  //         return;
+  //       }
+
+  //       const remainingBalance = user.walletEarning - amount;
+  //       if (remainingBalance < walletDetails?.totalPreviourRoyalty) {
+  //         toast.error(
+  //           `You must keep at least $ ${walletDetails?.totalPreviourRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
+  //         );
+  //         return;
+  //       }
+  //     } else if (dateOfMonth === 5) {
+  //       // ✅ Sirf 5th hai
+  //       if (editForm.walletType !== "royaltyWallet") {
+  //         toast.error("Only Royalty Wallet withdrawal is allowed on 5th");
+  //         return;
+  //       }
+
+  //       // 🛑 Check balance in royalty wallet
+  //       if (amount > walletDetails?.totalPreviourRoyalty) {
+  //         toast.error("Insufficient Royalty Wallet Balance");
+  //         return;
+  //       }
+  //     } else {
+  //       // ❌ Na Wednesday hai, na 5 tareekh
+  //       toast.error(
+  //         "Withdrawals are only allowed on Wednesdays or 5th of the month"
+  //       );
+  //       return;
+  //     }
+
+  //     // console.log("earning amount",user.walletEarning)
+
+  //     const data = {
+  //       sponsorID: editForm.userID,
+  //       senderWallet: editForm.receive,
+  //       walletType: editForm.walletType,
+  //       amount: editForm.amount,
+  //       receiveWallet: editForm.walletAddress,
+  //     };
+
+  //     const response = await addWithdrawService(data);
+  //     if (response.success) {
+  //       toast.success(response.message);
+  //       getPayments();
+  //     } else {
+  //       toast.error(data.message || "Failed to update profile");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to send deposit Requist. Please try again later.");
+  //   } finally {
+  //     // console.log("api call pass");
+  //     setEditForm((prev) => ({
+  //       ...prev, // baaki fields as it is
+  //       amount: "", // sirf amount reset
+  //       walletType: "", // sirf amount reset
+  //     }));
+  //     setShowWithDrawModal(false);
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const handelSubmitWithdraw = async () => {
-    const amount = Number(editForm.amount);
-    try {
-      const today = new Date();
-      const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
-      const dateOfMonth = today.getDate(); // e.g. 1,2,3...5
-      // const dayOfWeek = 3 // 0=Sunday ... 3=Wednesday
-      // const dateOfMonth = 5; // e.g. 1,2,3...5
-      // 1️⃣ Empty or zero check
-      if (!amount) {
-        toast.error("Please enter amount");
-        return;
-      }
-
-      // check wallet Address is exist or not
-      if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
-        toast.error("Please add wallet address go to profile");
-        return;
-      }
-
-      // ✅ check amount Withdrawal Limit
-      if (amount < 10) {
-        toast.error("minimum Withdrawal Limit 10");
-        return;
-      }
-
-      // Check sufficient balance
-      if (user.walletEarning < amount) {
-        toast.error("Not sufficient Balance in Wallet");
-        return;
-      }
-
-      // 5️⃣ Check conditions for withdrawal
-
-      if (dayOfWeek === 3 && dateOfMonth === 5) {
-        // ✅ Agar Wednesday + 5th hai → sab wallets allowed
-        console.log("Allowed: Any wallet (including royalty)");
-      } else if (dayOfWeek === 3) {
-        // ✅ Sirf Wednesday hai
-        if (editForm.walletType === "royaltyWallet") {
-          toast.error("Royalty Wallet withdrawal is only allowed on 5th");
-          return;
-        }
-
-        const remainingBalance = user.walletEarning - amount;
-        if (remainingBalance < walletDetails.totalPreviourRoyalty) {
-          toast.error(
-            `You must keep at least $ ${walletDetails.totalPreviourRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
-          );
-          return;
-        }
-      } else if (dateOfMonth === 5) {
-        // ✅ Sirf 5th hai
-        if (editForm.walletType !== "royaltyWallet") {
-          toast.error("Only Royalty Wallet withdrawal is allowed on 5th");
-          return;
-        }
-
-        // 🛑 Check balance in royalty wallet
-        if (amount > walletDetails.totalPreviourRoyalty) {
-          toast.error("Insufficient Royalty Wallet Balance");
-          return;
-        }
-      } else {
-        // ❌ Na Wednesday hai, na 5 tareekh
-        toast.error(
-          "Withdrawals are only allowed on Wednesdays or 5th of the month"
-        );
-        return;
-      }
-
-      // console.log("earning amount",user.walletEarning)
-
-      const data = {
-        sponsorID: editForm.userID,
-        senderWallet: editForm.receive,
-        walletType: editForm.walletType,
-        amount: editForm.amount,
-        receiveWallet: editForm.walletAddress,
-      };
-
-      const response = await addWithdrawService(data);
-      if (response.success) {
-        toast.success(response.message);
-        getPayments();
-      } else {
-        toast.error(data.message || "Failed to update profile");
-      }
-    } catch (error) {
-      toast.error("Failed to send deposit Requist. Please try again later.");
-    } finally {
-      // console.log("api call pass");
-      setEditForm((prev) => ({
-        ...prev, // baaki fields as it is
-        amount: "", // sirf amount reset
-        walletType: "", // sirf amount reset
-      }));
-      setShowWithDrawModal(false);
-      setIsLoading(false);
-    }
-  };
+    toast.error("work in progress");
+  }
 
   // disposit api call here
   const handelSubmitDiposit = async () => {
@@ -696,7 +694,7 @@ const Home = () => {
               Total Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              $ {walletDetails.totalAmount.toFixed(2)}
+              $ {user.totalEarning.toFixed(2)}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
@@ -722,7 +720,7 @@ const Home = () => {
               Month Earning (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              $ {walletDetails.currentMonthTotal.toFixed(2)}
+              {/* $ {walletDetails.currentMonthTotal.toFixed(2)} */}
             </p>
             <div className="mt-3 h-1 bg-purple-500/30 rounded-full">
               <div className="h-full bg-purple-500 rounded-full w-4/5"></div>
@@ -735,7 +733,7 @@ const Home = () => {
               Total WithDraw (USDT)
             </h3>
             <p className="text-white text-3xl font-bold">
-              $ {walletDetails.totalWithDrawal}
+              {/* $ {walletDetails.totalWithDrawal} */}
             </p>
             <div className="mt-3 h-1 bg-red-500/30 rounded-full">
               <div className="h-full bg-red-500 rounded-full w-3/4"></div>
