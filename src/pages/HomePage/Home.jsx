@@ -231,7 +231,6 @@ const Home = () => {
   // withDraw api call here
   const handelSubmitWithdraw = async () => {
 
-    console.log("usr", editForm)
 
     let amount;
     if (editForm.walletType === "royaltyWallet") {
@@ -240,7 +239,6 @@ const Home = () => {
       amount = Number(editForm.amount);
     }
 
-    console.log(amount)
     try {
       const today = new Date();
       const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
