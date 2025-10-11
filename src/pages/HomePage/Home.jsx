@@ -43,6 +43,7 @@ const Home = () => {
   const [error, setError] = useState("");
   const [transaction, setTransaction] = useState([]);
   const [totalWithDrawal, settotalWithDrawal] = useState(0);
+  const [previousRoyalty, setPreviousRoyalty] = useState([])
 
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
@@ -54,6 +55,7 @@ const Home = () => {
     // Assuming response has Datalist
     if (details) {
       settotalWithDrawal(details.totalWithDrawal);
+      setPreviousRoyalty(details.getUnpaidRoyalty)
     }
   }
 
@@ -75,6 +77,8 @@ const Home = () => {
     }
   }
 
+
+  // console.log("outercheck royalty", previousRoyalty)
 
 
 
@@ -225,111 +229,129 @@ const Home = () => {
   };
 
   // withDraw api call here
-  // const handelSubmitWithdraw = async () => {
-  //   const amount = Number(editForm.amount);
-  //   try {
-  //     const today = new Date();
-  //     const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
-  //     const dateOfMonth = today.getDate(); // e.g. 1,2,3...5
-  //     // const dayOfWeek = 3 // 0=Sunday ... 3=Wednesday
-  //     // const dateOfMonth = 5; // e.g. 1,2,3...5
-  //     // 1️⃣ Empty or zero check
-  //     if (!amount) {
-  //       toast.error("Please enter amount");
-  //       return;
-  //     }
-
-  //     // check wallet Address is exist or not
-  //     if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
-  //       toast.error("Please add wallet address go to profile");
-  //       return;
-  //     }
-
-  //     // ✅ check amount Withdrawal Limit
-  //     if (amount < 10) {
-  //       toast.error("minimum Withdrawal Limit 10");
-  //       return;
-  //     }
-
-  //     // Check sufficient balance
-  //     if (user.walletEarning < amount) {
-  //       toast.error("Not sufficient Balance in Wallet");
-  //       return;
-  //     }
-
-  //     // 5️⃣ Check conditions for withdrawal
-
-  //     if (dayOfWeek === 3 && dateOfMonth === 5) {
-  //       // ✅ Agar Wednesday + 5th hai → sab wallets allowed
-  //       console.log("Allowed: Any wallet (including royalty)");
-  //     } else if (dayOfWeek === 3) {
-  //       // ✅ Sirf Wednesday hai
-  //       if (editForm.walletType === "royaltyWallet") {
-  //         toast.error("Royalty Wallet withdrawal is only allowed on 5th");
-  //         return;
-  //       }
-
-  //       const remainingBalance = user.walletEarning - amount;
-  //       if (remainingBalance < walletDetails?.totalPreviourRoyalty) {
-  //         toast.error(
-  //           `You must keep at least $ ${walletDetails?.totalPreviourRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
-  //         );
-  //         return;
-  //       }
-  //     } else if (dateOfMonth === 5) {
-  //       // ✅ Sirf 5th hai
-  //       if (editForm.walletType !== "royaltyWallet") {
-  //         toast.error("Only Royalty Wallet withdrawal is allowed on 5th");
-  //         return;
-  //       }
-
-  //       // 🛑 Check balance in royalty wallet
-  //       if (amount > walletDetails?.totalPreviourRoyalty) {
-  //         toast.error("Insufficient Royalty Wallet Balance");
-  //         return;
-  //       }
-  //     } else {
-  //       // ❌ Na Wednesday hai, na 5 tareekh
-  //       toast.error(
-  //         "Withdrawals are only allowed on Wednesdays or 5th of the month"
-  //       );
-  //       return;
-  //     }
-
-  //     // console.log("earning amount",user.walletEarning)
-
-  //     const data = {
-  //       sponsorID: editForm.userID,
-  //       senderWallet: editForm.receive,
-  //       walletType: editForm.walletType,
-  //       amount: editForm.amount,
-  //       receiveWallet: editForm.walletAddress,
-  //     };
-
-  //     const response = await addWithdrawService(data);
-  //     if (response.success) {
-  //       toast.success(response.message);
-  //       getPayments();
-  //     } else {
-  //       toast.error(data.message || "Failed to update profile");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Failed to send deposit Requist. Please try again later.");
-  //   } finally {
-  //     // console.log("api call pass");
-  //     setEditForm((prev) => ({
-  //       ...prev, // baaki fields as it is
-  //       amount: "", // sirf amount reset
-  //       walletType: "", // sirf amount reset
-  //     }));
-  //     setShowWithDrawModal(false);
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handelSubmitWithdraw = async () => {
-    toast.error("work in progress");
-  }
+
+    console.log("usr", editForm)
+
+    let amount;
+    if (editForm.walletType === "royaltyWallet") {
+      amount = editForm.amount
+    } else {
+      amount = Number(editForm.amount);
+    }
+
+    console.log(amount)
+    try {
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0=Sunday ... 3=Wednesday
+      const dateOfMonth = today.getDate(); // e.g. 1,2,3...5
+      // const dayOfWeek = 3 // 0=Sunday ... 3=Wednesday
+      // const dateOfMonth = 5; // e.g. 1,2,3...5
+
+
+      // check wallet Address is exist or not
+      if (!editForm.walletAddress || editForm.walletAddress.trim() === "") {
+        toast.error("Please add wallet address go to profile");
+        return;
+      }
+
+
+
+      // 5️⃣ Check conditions for withdrawal
+
+      if (dayOfWeek === 3 && dateOfMonth === 5) {
+        // ✅ Agar Wednesday + 5th hai → sab wallets allowed
+        console.log("Allowed: Any wallet (including royalty)");
+      } else if (dayOfWeek === 3) {
+        // ✅ Sirf Wednesday hai
+        if (editForm.walletType === "royaltyWallet") {
+          toast.error("Royalty Wallet withdrawal is only allowed on 5th");
+          return;
+        }
+
+
+        // 1️⃣ Empty or zero check
+        if (!amount) {
+          toast.error("Please enter amount");
+          return;
+        }
+
+        // ✅ check amount Withdrawal Limit
+        if (amount < 10) {
+          toast.error("minimum Withdrawal Limit 10");
+          return;
+        }
+
+        // Check sufficient balance
+        if (user.walletEarning < amount) {
+          toast.error("Not sufficient Balance in Wallet");
+          return;
+        }
+
+        const remainingBalance = user.walletEarning - amount;
+        const totalPreviourRoyalty = previousRoyalty.reduce((sum, item) => sum + item.creditedAmount, 0);
+        if (remainingBalance < totalPreviourRoyalty) {
+          toast.error(
+            `You must keep at least $ ${totalPreviourRoyalty} in Earning Wallet (equal to your Royalty Wallet balance)`
+          );
+          return;
+        }
+
+
+      } else if (dateOfMonth === 5) {
+        // ✅ Sirf 5th hai
+        if (editForm.walletType !== "royaltyWallet") {
+          toast.error("Only Royalty Wallet withdrawal is allowed on 5th");
+          return;
+        }
+
+        // 🛑 Check balance in royalty wallet
+        // if (amount > walletDetails?.totalPreviourRoyalty) {
+        //   toast.error("Insufficient Royalty Wallet Balance");
+        //   return;
+        // }
+      } else {
+        // ❌ Na Wednesday hai, na 5 tareekh
+        toast.error(
+          "Withdrawals are only allowed on Wednesdays or 5th of the month"
+        );
+        return;
+      }
+
+      // console.log("earning amount",user.walletEarning)
+
+      const data = {
+        sponsorID: editForm.userID,
+        senderWallet: editForm.receive,
+        walletType: editForm.walletType,
+        amount: editForm.amount,
+        receiveWallet: editForm.walletAddress,
+      };
+
+      const response = await addWithdrawService(data);
+      if (response.success) {
+        toast.success(response.message);
+        getPayments();
+      } else {
+        toast.error(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Failed to send deposit Requist. Please try again later.");
+    } finally {
+      // console.log("api call pass");
+      setEditForm((prev) => ({
+        ...prev, // baaki fields as it is
+        amount: "", // sirf amount reset
+        walletType: "", // sirf amount reset
+      }));
+      setShowWithDrawModal(false);
+      setIsLoading(false);
+    }
+  };
+
+  // const handelSubmitWithdraw = async () => {
+  //   toast.error("work in progress");
+  // }
 
   // disposit api call here
   const handelSubmitDiposit = async () => {
@@ -628,7 +650,7 @@ const Home = () => {
           <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
             <div
               className="flex flex-col items-center text-center"
-              // onClick={() => handleWithDrawClick()}
+              onClick={() => handleWithDrawClick()}
             >
               <div className="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center mb-3">
                 <ArrowDown className="text-blue-400" size={24} />
@@ -915,38 +937,7 @@ const Home = () => {
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Amount
-                </label>
-                <input
-                  type="number"
-                  value={editForm.amount}
-                  // onChange={handleChange}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, amount: e.target.value }))
-                  }
-                  placeholder={"Enter amount Greater than 19"}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
-                />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Your Wallet Address
-                </label>
-                <input
-                  type="email"
-                  value={user.walletAddress}
-                  // onChange={(e) =>
-                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
-                  // }
-                  placeholder={user.walletAddress}
-                  disabled={true}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
-                />
-              </div>
+              {/* select Wallet */}
 
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
@@ -968,18 +959,105 @@ const Home = () => {
                   <option value="royaltyWallet">
                     {/* Royalty Income (
                     {walletDetails.totalPreviourRoyalty.toFixed(1)}) */}
+                    Royalty Income
                   </option>
                   <option value="selfWallet">
-                    Earning Income (
+                    {/* Earning Income (
                     {(
                       Number(user.walletSelfEarn) +
                       Number(user.walletTeamEarn) +
                       Number(user.walletReward)
                     ).toFixed(1)}
-                    )
+                    ) */}
+                    Earning Income
                   </option>
                 </select>
               </div>
+
+
+
+
+              {/* <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  value={editForm.amount}
+                  // onChange={handleChange}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, amount: e.target.value }))
+                  }
+                  placeholder={"Enter amount Greater than 19"}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+              </div> */}
+
+
+              {`${editForm.walletType}` === "selfWallet" && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                    Amount
+                  </label>
+                  <input
+                    type="number"
+                    value={editForm.amount}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, amount: e.target.value }))
+                    }
+                    placeholder="Enter amount greater than 19"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                  />
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
+                </div>
+              )}
+
+              {`${editForm.walletType}` === "royaltyWallet" && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                    Select Royalty Option
+                  </label>
+                  <select
+                    value={editForm.amount}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, amount: e.target.value }))
+                    }
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-blue-400 transition-colors"
+                  >
+                    <option value="">-- Select Royalty --</option>
+                    {/* <option value="monthly">Monthly Royalty</option>
+                    <option value="yearly">Yearly Royalty</option> */}
+                    {previousRoyalty.map((r) => (
+                      <option key={r._id} value={r._id}>
+                        {r.month} — ₹{r.creditedAmount}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+
+              {/* Wallet Address Section  */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Your Wallet Address
+                </label>
+                <input
+                  type="email"
+                  value={user.walletAddress}
+                  // onChange={(e) =>
+                  //   setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  // }
+                  placeholder={user.walletAddress}
+                  disabled={true}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
+                />
+              </div>
+
+
+
+
 
               <div className="flex gap-3 pt-1">
                 <button
