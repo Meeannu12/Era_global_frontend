@@ -1028,7 +1028,7 @@ const Home = () => {
                     <option value="yearly">Yearly Royalty</option> */}
                     {previousRoyalty.map((r) => (
                       <option key={r._id} value={r._id}>
-                        {r.month} — ₹{r.creditedAmount}
+                        {r.month} — $ {r.creditedAmount}
                       </option>
                     ))}
                   </select>
