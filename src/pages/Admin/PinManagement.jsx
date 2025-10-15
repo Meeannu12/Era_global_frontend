@@ -17,6 +17,7 @@ import {
 import jsPDF from "jspdf";
 import apiService from "../../apis/pinManageServices";
 import {
+  getAllUsers,
   getDepositTransactionService,
   getPaymentTransactions,
   getWithdrawTransactionService,
@@ -52,6 +53,13 @@ const PinManagement = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(100);
 
+
+  // Users Detaisl show 
+  const [userDetails, setUserDetails] = useState([]);
+  const [userCurrentPage, setUserCurrentPage] = useState(1);
+  const [userTotalPages, setUserTotalPages] = useState(1);
+
+
   // Assign pin to sponsor ID state
   const [sponsorID, setSponsorID] = useState("");
   const [numberOfPins, setNumberOfPins] = useState(1);
@@ -64,9 +72,10 @@ const PinManagement = () => {
 
   // API functions
 
+
   const getwithDrawPayments = async () => {
     const response = await getWithdrawTransactionService();
-    console.log("response", response);
+    // console.log("response", response);
     setWithdrawTransaction(response.data);
   };
 
@@ -77,6 +86,8 @@ const PinManagement = () => {
   };
 
   useEffect(() => {
+    // getAllUserDetails()
+    fetchUserDetails()
     getwithDrawPayments();
     getDepositPayments();
     fetchStats();
@@ -116,6 +127,26 @@ const PinManagement = () => {
     } catch (error) {
       setMessage("Error generating pins: " + error.message);
       console.error("Error:", error);
+    }
+    setLoading(false);
+  };
+
+
+
+  const fetchUserDetails = async (page = 1) => {
+    setLoading(true);
+    try {
+      const response = await getAllUsers(page, limit);
+      if (response.success) {
+        // console.log("usersssss", response)
+        setUserDetails(response.users)
+        setUserTotalPages(response.totalPages)
+        setUserCurrentPage(response.page)
+      } else {
+        setMessage(response.message || "Failed to fetch unused pins");
+      }
+    } catch (error) {
+      setMessage("Error fetching unused pins: " + error.message);
     }
     setLoading(false);
   };
@@ -392,19 +423,18 @@ const PinManagement = () => {
         {/* Message Display */}
         {message && (
           <div
-            className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${
-              message.includes("Error") ||
+            className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${message.includes("Error") ||
               message.includes("Failed") ||
               message.includes("not found") ||
               message.includes("already used")
-                ? "bg-red-100 text-red-800 border border-red-200"
-                : "bg-green-100 text-green-800 border border-green-200"
-            }`}
+              ? "bg-red-100 text-red-800 border border-red-200"
+              : "bg-green-100 text-green-800 border border-green-200"
+              }`}
           >
             {message.includes("Error") ||
-            message.includes("Failed") ||
-            message.includes("not found") ||
-            message.includes("already used") ? (
+              message.includes("Failed") ||
+              message.includes("not found") ||
+              message.includes("already used") ? (
               <AlertCircle size={20} />
             ) : (
               <Check size={20} />
@@ -496,6 +526,7 @@ const PinManagement = () => {
                 label: "Forget Password",
                 icon: FileDownIcon,
               },
+              { id: "users", label: "Users", icon: Search },
               {
                 id: "withdraw",
                 label: "WithDraw Request",
@@ -510,11 +541,10 @@ const PinManagement = () => {
               <button
                 key={id}
                 onClick={() => handleTabClick(id)}
-                className={`flex items-center rounded-2xl gap-1 px-2 py-2 m-1 font-medium transition-colors ${
-                  activeTab === id
-                    ? "text-blue-600 border-2 bg-blue-500/10 border-blue-600"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
+                className={`flex items-center rounded-2xl gap-1 px-2 py-2 m-1 font-medium transition-colors ${activeTab === id
+                  ? "text-blue-600 border-2 bg-blue-500/10 border-blue-600"
+                  : "text-gray-600 hover:text-gray-800"
+                  }`}
               >
                 <Icon size={17} />
                 {label}
@@ -749,6 +779,170 @@ const PinManagement = () => {
                         </div>
                       ))}
                     </div>
+                  </>
+                )}
+              </div>
+            )}
+
+
+            {/* Unused PINs Tab */}
+            {activeTab === "users" && (
+              <div className="space-y-6">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Users Details
+                      </label>
+                      <select
+                        value={limit}
+                        onChange={(e) => setLimit(parseInt(e.target.value))}
+                        className="px-3 py-2 border border-gray-300 rounded-lg text-white bg-gray-700 focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                        <option value={200}>200</option>
+                        <option value={500}>500</option>
+                        {/* <option value={1000}>1000</option>
+                        <option value={2000}>2000</option>
+                        <option value={5000}>5000</option>
+                        <option value={10000}>10000</option> */}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* <div className="flex gap-2">
+                    <button
+                      onClick={downloadCurrentPagePDF}
+                      disabled={unusedPins.length === 0}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
+                    >
+                      <Download size={20} />
+                      Download Page
+                    </button>
+                  </div> */}
+                </div>
+
+                {loading ? (
+                  <div className="flex justify-center py-8">
+                    <RefreshCw
+                      className="animate-spin text-blue-600"
+                      size={32}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {/* Pagination */}
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-600">
+                        Page {userCurrentPage} of {userTotalPages}
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => fetchUserDetails(userCurrentPage - 1)}
+                          disabled={userCurrentPage <= 1}
+                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50"
+                        >
+                          Previous
+                        </button>
+                        <button
+                          onClick={() => fetchUserDetails(userCurrentPage + 1)}
+                          disabled={userCurrentPage >= userTotalPages}
+                          className="px-3 py-1 border text-black border-gray-300 rounded disabled:opacity-50 hover:bg-gray-50"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                    {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {userDetails.map((pin, index) => (
+                        <div
+                          key={index}
+                          className="bg-gray-50 p-3 rounded-lg text-black font-mono text-center hover:bg-gray-100 transition-colors"
+                        >
+                          {pin}
+                        </div>
+                      ))}
+                    </div> */}
+
+
+
+                    {userDetails.length === 0 ? (
+                      <div className="text-center text-gray-400 py-8">
+                        <p>No recent transactions</p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="table-auto w-full text-sm text-black">
+                          <thead>
+                            <tr className="border-b border-gray-600">
+                              <th className="px-1 py-1">User Name</th>
+                              <th className="px-1 py-1">Sponsor ID</th>
+                              <th className="px-1 py-1">User Id</th>
+                              <th className="px-1 py-1">Phone No</th>
+                              <th className="px-1 py-1">Email ID</th>
+                              {/* <th className="px-1 py-1">Receive Wallet</th>
+                              <th className="px-1 py-1">Date</th>
+                              <th className="px-1 py-1 text-center">Actions</th> */}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {userDetails.map((tx) => (
+                              <tr key={tx._id} className="border-b border-gray-700">
+                                <td className="px-1 py-1 text-center">
+                                  {tx.username}
+                                </td>
+                                {/* <td className="px-1 py-1 text-center">{tx.mode}</td> */}
+                                <td className="px-1 py-1 text-center">
+                                  <div className="">
+                                    {tx.sponsorID} {tx?.user?.username}
+                                  </div>
+                                </td>
+
+                                <td className="px-1 py-1 text-center">
+                                  {tx.userID}
+                                </td>
+                                <td className="px-1 py-1 text-center">
+                                  {tx.phone}
+                                </td>
+                                <td className="px-1 py-1 text-center">
+                                  {tx.email}
+                                </td>
+                                {/* <td className="px-1 py-1 text-center">
+                                  {new Date(tx.createdAt).toLocaleString()}
+                                </td> */}
+                                {/* <td className="px-1 py-1 flex gap-2 justify-center">
+                                  <button
+                                    onClick={() =>
+                                      handelUpdateStatus(
+                                        tx._id,
+                                        "Verified",
+                                        "Withdraw"
+                                      )
+                                    }
+                                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                                  >
+                                    Verify
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handelUpdateStatus(
+                                        tx._id,
+                                        "Rejected",
+                                        "Withdraw"
+                                      )
+                                    }
+                                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                                  >
+                                    Reject
+                                  </button>
+                                </td> */}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </>
                 )}
               </div>

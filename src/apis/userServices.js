@@ -27,6 +27,16 @@ export const getUser = async () => {
   }
 };
 
+
+export const getAllUsers = async (page, limit) => {
+  try {
+    const response = await AXIOS.get(`/api/v1/users/allUser?page=${page}&limit=${limit}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export const activePinService = async (data) => {
   try {
     const response = await AXIOS.post("/api/v1/pins/active-pin", { pin: data });
