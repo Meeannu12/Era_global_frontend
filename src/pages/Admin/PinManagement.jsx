@@ -17,6 +17,7 @@ import {
 import jsPDF from "jspdf";
 import apiService from "../../apis/pinManageServices";
 import {
+  downloadUserExcel,
   getAllUsers,
   getDepositTransactionService,
   getPaymentTransactions,
@@ -81,7 +82,7 @@ const PinManagement = () => {
 
   const getDepositPayments = async () => {
     const response = await getDepositTransactionService();
-    console.log("response", response);
+    // console.log("response", response);
     setDepositTransaction(response.data);
   };
 
@@ -240,6 +241,33 @@ const PinManagement = () => {
 
     setMessage(`Page ${currentPage} pins downloaded successfully!`);
   };
+
+
+  const downloadUserDetails = async () => {
+    try {
+      console.log("click User");
+
+      const res = await downloadUserExcel(); // should return blob response
+
+      // ✅ Create a blob from res.data, not res
+      const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'UserDetails.xlsx'); // filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+      toast.success('Downloaded user details successfully');
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.error('Failed to download user details');
+    }
+  }
 
   const generatePDFContent = (pinsData, filename, metadata) => {
     try {
@@ -811,16 +839,16 @@ const PinManagement = () => {
                     </div>
                   </div>
 
-                  {/* <div className="flex gap-2">
+                  <div className="flex gap-2">
                     <button
-                      onClick={downloadCurrentPagePDF}
-                      disabled={unusedPins.length === 0}
+                      onClick={downloadUserDetails}
+                      disabled={userDetails.length === 0}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
                     >
                       <Download size={20} />
                       Download Page
                     </button>
-                  </div> */}
+                  </div>
                 </div>
 
                 {loading ? (

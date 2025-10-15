@@ -37,6 +37,29 @@ export const getAllUsers = async (page, limit) => {
   }
 }
 
+
+// export const downloadUserExcel = async () => {
+//   try {
+//     const response = await AXIOS.get("/api/v1/users/downloadUserDetails")
+//     return response.data
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+
+export const downloadUserExcel = async () => {
+  try {
+    const response = await AXIOS.get("/api/v1/users/downloadUserDetails", {
+      responseType: "blob", // 👈 MUST HAVE for Excel, PDF, etc.
+    });
+    return response; // 👈 return the whole response, not response.data
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const activePinService = async (data) => {
   try {
     const response = await AXIOS.post("/api/v1/pins/active-pin", { pin: data });
