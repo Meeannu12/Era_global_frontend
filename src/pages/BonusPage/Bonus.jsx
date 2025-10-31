@@ -13,6 +13,7 @@ import {
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import {
+  dewnloadUserEarningReport,
   getTeamIncomeBySponsorID,
   getWalletDetails,
 } from "../../apis/userServices";
@@ -224,6 +225,33 @@ const Bonus = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
+
+  const downloadUserReport = async () => {
+    try {
+      // console.log("click User");
+
+      const res = await dewnloadUserEarningReport(); // should return blob response
+
+      // ✅ Create a blob from res.data, not res
+      const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'user_Income_Report.xlsx'); // filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+      toast.success('Downloaded user details successfully');
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.error('Failed to download user details');
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 p-4 sm:p-6">
       {/* Header Card */}
@@ -247,7 +275,9 @@ const Bonus = () => {
         <div className="relative z-10 p-4 sm:p-8">
           {/* Icon Badge */}
           <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 backdrop-blur-sm rounded-2xl mb-4 shadow-lg shadow-purple-500/30 border border-purple-400/20">
-            <ArrowUp className="w-8 h-8 text-white" />
+            <ArrowUp className="w-8 h-8 text-white hover:cursor-alias"
+              onClick={downloadUserReport}
+            />
           </div>
 
           {/* Stats Grid */}

@@ -59,6 +59,17 @@ export const downloadUserExcel = async () => {
   }
 };
 
+export const dewnloadUserEarningReport = async () => {
+  try {
+    const response = await AXIOS.get("/api/v1/users/downloadUserIncomeReport", {
+      responseType: 'blob'
+    })
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
 
 export const activePinService = async (data) => {
   try {

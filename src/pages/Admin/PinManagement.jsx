@@ -245,7 +245,7 @@ const PinManagement = () => {
 
   const downloadUserDetails = async () => {
     try {
-      console.log("click User");
+      // console.log("click User");
 
       const res = await downloadUserExcel(); // should return blob response
 
