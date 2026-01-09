@@ -1133,7 +1133,7 @@ const PinManagement = () => {
       opacity-0
       group-hover:opacity-100
       transition
-      bg-black text-white text-xs px-2 py-1 rounded
+      bg-black text-white text-2xl px-2 py-1 rounded
       whitespace-nowrap
     "
                               >
