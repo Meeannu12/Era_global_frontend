@@ -1137,9 +1137,9 @@ const PinManagement = () => {
       whitespace-nowrap
     "
                               >
-                                {user.name}
+                                {tx?.user?.walletEarning}
                               </span>
-                              $ {tx?.user?.walletEarning}
+                              $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
                             <td className="px-1 py-1 text-center">
