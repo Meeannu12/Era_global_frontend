@@ -1125,20 +1125,8 @@ const PinManagement = () => {
                       </thead>
                       <tbody>
                         {withdrawTransaction.map((tx) => (
-                          <tr key={tx._id} className="group border-b border-gray-700">
-                            <td className="relative px-1 py-1 text-center">
-                              <span
-                                className="
-      absolute left-full ml-2 top-1/2 -translate-y-1/2
-      opacity-0
-      group-hover:opacity-100
-      transition
-      bg-black text-white text-2xl px-2 py-1 rounded
-      whitespace-nowrap
-    "
-                              >
-                                $ {tx?.user?.walletEarning}
-                              </span>
+                          <tr key={tx._id} className="border-b border-gray-700">
+                            <td className="px-1 py-1 text-center">
                               $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
@@ -1160,7 +1148,7 @@ const PinManagement = () => {
                             <td className="px-1 py-1 text-center">
                               {new Date(tx.createdAt).toLocaleString()}
                             </td>
-                            <td className="px-1 py-1 flex gap-2 justify-center hover:{${user.id}">
+                            <td className="px-1 py-1 flex gap-2 justify-center">
                               <button
                                 onClick={() =>
                                   handelUpdateStatus(
@@ -1220,21 +1208,8 @@ const PinManagement = () => {
                       </thead>
                       <tbody>
                         {depositTransaction.map((tx) => (
-                          <tr key={tx._id} className="group border-b border-gray-700">
-                            {/* <td className="px-1 py-1 text-center"> */}
-                            <td className="relative px-1 py-1 text-center">
-                              <span
-                                className="
-      absolute left-full ml-2 top-1/2 -translate-y-1/2
-      opacity-0
-      group-hover:opacity-100
-      transition
-      bg-black text-white text-2xl px-2 py-1 rounded
-      whitespace-nowrap
-    "
-                              >
-                                $ {tx?.user?.walletEarning}
-                              </span>
+                          <tr key={tx._id} className="border-b border-gray-700">
+                            <td className="px-1 py-1 text-center">
                               $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
