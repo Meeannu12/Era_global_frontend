@@ -1135,7 +1135,12 @@ const PinManagement = () => {
                       <tbody>
                         {withdrawTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
-                            <td className="px-1 py-1 text-center">
+                            <td className="px-1 py-1 text-center"
+                              onClick={() => {
+                                setSelectedUser(tx.user)
+                                setOpenDialog(true)
+                              }}
+                            >
                               $ {tx.amount}
                             </td>
                             <td className="px-1 py-1 text-center">{tx.mode}</td>
@@ -1158,15 +1163,12 @@ const PinManagement = () => {
                               {new Date(tx.createdAt).toLocaleString()}
                             </td>
                             {/* add view user details icon */}
-                            <td className="px-1 py-1 text-center"
-                              onClick={() => {
-                                setSelectedUser(tx.user)
-                                setOpenDialog(true)
-                              }}
+                            {/* <td className="px-1 py-1 text-center"
+                             
                             >
                               <BarChart3 className="text-black" size={24} />
 
-                            </td>
+                            </td> */}
                             <td className="px-1 py-1 flex gap-2 justify-center">
                               <button
                                 onClick={() =>
