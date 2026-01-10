@@ -71,6 +71,9 @@ const PinManagement = () => {
   const [newPassword, setNewPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  const [openDialog, setOpenDialog] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
+
   // API functions
 
 
@@ -1124,7 +1127,7 @@ const PinManagement = () => {
                           <th className="px-1 py-1">Receive Wallet</th>
                           <th className="px-1 py-1">Status</th>
                           <th className="px-1 py-1">Date</th>
-                          {/* <th className="px-1 py-1">View</th> */}
+                          <th className="px-1 py-1">View</th>
                           <th className="px-1 py-1 text-center">Actions</th>
                         </tr>
                       </thead>
@@ -1153,7 +1156,14 @@ const PinManagement = () => {
                             <td className="px-1 py-1 text-center">
                               {new Date(tx.createdAt).toLocaleString()}
                             </td>
-                            <td className="px-1 py-1 text-center">
+                            {/* add view user details icon */}
+                            <td className="px-1 py-1 text-center"
+                              onClick={() => {
+                                setSelectedUser(tx.user)
+                                setOpenDialog(true)
+                              }}
+                            >
+                              H
 
                             </td>
                             <td className="px-1 py-1 flex gap-2 justify-center">
@@ -1273,6 +1283,12 @@ const PinManagement = () => {
                 )}
               </div>
             )}
+
+            <UserDialog
+              open={openDialog}
+              user={selectedUser}
+              onClose={() => setOpenDialog(false)}
+            />
           </div>
         </div>
       </div>
