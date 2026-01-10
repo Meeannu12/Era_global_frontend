@@ -54,7 +54,7 @@ const AppRoutes = () => {
           path="/wallet/withdrawal-history"
           element={<WithdralalHistory />}
         />
-        <Route path="/admin/generate-pins" element={<PinManagement />} />
+        <Route path="/admin/ERA-317099763N" element={<PinManagement />} />
       </Routes>
     </Suspense>
   );
