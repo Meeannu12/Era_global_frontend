@@ -25,6 +25,7 @@ import {
   updatePaymentStatus,
 } from "../../apis/userServices";
 import toast from "react-hot-toast";
+import UserDialog from "../../components/userAccountDialog";
 
 const PinManagement = () => {
   const [showLogin, setShowLogin] = useState(false);
