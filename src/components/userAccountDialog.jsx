@@ -16,11 +16,11 @@ const UserDialog = ({ open, onClose, user }) => {
                 <h2 className="text-lg font-semibold mb-4">User Details</h2>
 
                 <div className="space-y-2 text-sm">
-                    <p><span className="font-medium text-black">Deposit:</span> {user?.walletDeposit}</p>
-                    <p><span className="font-medium text-black">Self Earning:</span> {user?.walletSelfEarn}</p>
-                    <p><span className="font-medium text-black">Team Earning:</span> {user?.walletTeamEarn}</p>
-                    <p><span className="font-medium text-black">Balance:</span> {user?.walletEarning}</p>
-                    <p><span className="font-medium text-black">Total Earning:</span> {user?.totalEarning}</p>
+                    <p className="text-black"><span className="font-medium text-black">Deposit:</span> {user?.walletDeposit}</p>
+                    <p className="text-black"><span className="font-medium text-black">Self Earning:</span> {user?.walletSelfEarn}</p>
+                    <p className="text-black"><span className="font-medium text-black">Team Earning:</span> {user?.walletTeamEarn}</p>
+                    <p className="text-black"><span className="font-medium text-black">Balance:</span> {user?.walletEarning}</p>
+                    <p className="text-black"><span className="font-medium text-black">Total Earning:</span> {user?.totalEarning}</p>
                 </div>
 
                 <div className="mt-5 text-right">

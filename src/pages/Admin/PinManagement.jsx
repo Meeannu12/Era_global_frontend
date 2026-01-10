@@ -1128,14 +1128,14 @@ const PinManagement = () => {
                           <th className="px-1 py-1">Receive Wallet</th>
                           <th className="px-1 py-1">Status</th>
                           <th className="px-1 py-1">Date</th>
-                          <th className="px-1 py-1">View</th>
+                          {/* <th className="px-1 py-1">View</th> */}
                           <th className="px-1 py-1 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {withdrawTransaction.map((tx) => (
                           <tr key={tx._id} className="border-b border-gray-700">
-                            <td className="px-1 py-1 text-center"
+                            <td className="px-1 py-1 text-center cursor-pointer"
                               onClick={() => {
                                 setSelectedUser(tx.user)
                                 setOpenDialog(true)
