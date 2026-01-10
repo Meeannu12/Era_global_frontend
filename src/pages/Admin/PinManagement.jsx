@@ -34,8 +34,8 @@ const PinManagement = () => {
   const [loginError, setLoginError] = useState("");
   const [withdrawTransaction, setWithdrawTransaction] = useState([]);
   const [depositTransaction, setDepositTransaction] = useState([]);
-  const HARD_CODED_USERNAME = "ERA-264363299U";
-  const HARD_CODED_PASSWORD = "ADMIN768264ERA";
+  const HARD_CODED_USERNAME = "ERA-317099763N";
+  const HARD_CODED_PASSWORD = "ERA-3768264ERA";
 
   const [activeTab, setActiveTab] = useState("generate");
   const [stats, setStats] = useState(null);
@@ -390,7 +390,11 @@ const PinManagement = () => {
     if (
       (id === "unused" ||
         id === "assignPinToSponsorID" ||
-        id === "forgetPassword") &&
+        id === "forgetPassword" ||
+        id === "withdraw" ||
+        id === "deposit"
+
+      ) &&
       !isAuthenticated
     ) {
       setShowLogin(true);
@@ -1120,6 +1124,7 @@ const PinManagement = () => {
                           <th className="px-1 py-1">Receive Wallet</th>
                           <th className="px-1 py-1">Status</th>
                           <th className="px-1 py-1">Date</th>
+                          {/* <th className="px-1 py-1">View</th> */}
                           <th className="px-1 py-1 text-center">Actions</th>
                         </tr>
                       </thead>
@@ -1147,6 +1152,9 @@ const PinManagement = () => {
                             </td>
                             <td className="px-1 py-1 text-center">
                               {new Date(tx.createdAt).toLocaleString()}
+                            </td>
+                            <td className="px-1 py-1 text-center">
+
                             </td>
                             <td className="px-1 py-1 flex gap-2 justify-center">
                               <button
