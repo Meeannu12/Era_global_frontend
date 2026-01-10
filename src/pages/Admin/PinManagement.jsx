@@ -1164,7 +1164,7 @@ const PinManagement = () => {
                                 setOpenDialog(true)
                               }}
                             >
-                              H
+                              <BarChart3 className="text-black" size={24} />
 
                             </td>
                             <td className="px-1 py-1 flex gap-2 justify-center">
