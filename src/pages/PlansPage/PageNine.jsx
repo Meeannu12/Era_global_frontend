@@ -63,7 +63,7 @@ const PageNine = () => {
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold text-emerald-400">
-                    Min $20
+                    Min $11
                   </span>
                   <span className="text-emerald-300 text-sm">USD</span>
                 </div>
@@ -157,7 +157,7 @@ const PageNine = () => {
             <div className="text-white/80">Earning Levels</div>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20">
-            <div className="text-3xl font-bold text-purple-400 mb-2">$20</div>
+            <div className="text-3xl font-bold text-purple-400 mb-2">$11</div>
             <div className="text-white/80">Minimum Investment</div>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20">

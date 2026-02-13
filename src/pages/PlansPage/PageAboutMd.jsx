@@ -23,9 +23,9 @@ const PageThree = () => {
             <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
                 {/* Header Section */}
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
-                        <ChartNoAxesCombined className="w-4 h-4 text-yellow-400" />
-                        <span className="text-yellow-400 text-sm font-medium">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400 border border-green-500/20 rounded-full mb-6">
+                        <ChartNoAxesCombined className="w-4 h-4 text-white" />
+                        <span className="text-white text-sm font-bold">
                             About MD
                         </span>
                     </div>
@@ -39,14 +39,14 @@ const PageThree = () => {
 
 
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
-                        <Sparkles className="w-4 h-4 text-orange-400" />
-                        <span className="text-orange-400 text-sm font-medium">
-                            CMD - Chun Hei Sonn
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-400 border border-green-500/20 rounded-full mb-6">
+                        <Sparkles className="w-4 h-4 text-white" />
+                        <span className="text-white text-sm font-bold">
+                            About CMD
                         </span>
                     </div>
                     <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-orange-400 to-cyan-400 bg-clip-text text-transparent mb-4">
-                        Empowering Digital Excellence
+                        CMD - Chun Hei Sonn
                     </h1>
                     <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                         "A Dynamic entrepreneur shaping sustainable success through smart investments and global business leadership"
@@ -56,9 +56,9 @@ const PageThree = () => {
 
                 {/* Location  */}
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
-                        <MapPinned className="w-4 h-4 text-blue-400" />
-                        <span className="text-blue-400 text-sm font-medium">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-400 border border-green-500/20 rounded-full mb-6">
+                        <MapPinned className="w-4 h-4 text-white" />
+                        <span className="text-white text-sm font-bold">
                             OUR LOCATION
                         </span>
                     </div>
