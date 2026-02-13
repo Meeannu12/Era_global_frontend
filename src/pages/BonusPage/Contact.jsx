@@ -86,38 +86,33 @@ const Contact = ({
   return (
     <div className={`text-white ${className}`}>
       <div
-        className={`bg-gray-800/60 backdrop-blur-md rounded-2xl border border-gray-700/50 shadow-2xl ${
-          compact ? "p-6" : "p-8"
-        }`}
+        className={`bg-gray-800/60 backdrop-blur-md rounded-2xl border border-gray-700/50 shadow-2xl ${compact ? "p-6" : "p-8"
+          }`}
       >
         {/* Header */}
         {showTitle && (
           <div className="text-center mb-8">
             <div
-              className={`bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
-                compact ? "w-12 h-12" : "w-16 h-16"
-              }`}
+              className={`bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 ${compact ? "w-12 h-12" : "w-16 h-16"
+                }`}
             >
               <MessageCircle className="text-white" size={compact ? 20 : 28} />
             </div>
             <h2
-              className={`font-bold mb-2 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent ${
-                compact ? "text-2xl" : "text-3xl"
-              }`}
+              className={`font-bold mb-2 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent ${compact ? "text-2xl" : "text-3xl"
+                }`}
             >
               ERA GLOBAL
             </h2>
             <p
-              className={`font-semibold text-white mb-2 ${
-                compact ? "text-base" : "text-lg"
-              }`}
+              className={`font-semibold text-white mb-2 ${compact ? "text-base" : "text-lg"
+                }`}
             >
               Share and Get More!
             </p>
             <p
-              className={`text-gray-400 leading-relaxed ${
-                compact ? "text-xs" : "text-sm"
-              }`}
+              className={`text-gray-400 leading-relaxed ${compact ? "text-xs" : "text-sm"
+                }`}
             >
               "Unlock Rewards: Share and Earn with My Referral Link!"
             </p>
@@ -144,27 +139,24 @@ const Contact = ({
           {/* Referral Link */}
           <div className="bg-gray-700/50 rounded-xl p-4 border border-gray-600/50">
             <h3
-              className={`font-medium text-gray-300 mb-3 ${
-                compact ? "text-xs" : "text-sm"
-              }`}
+              className={`font-medium text-gray-300 mb-3 ${compact ? "text-xs" : "text-sm"
+                }`}
             >
               Your Referral Link
             </h3>
             <div className="flex items-center gap-3 bg-gray-800/70 rounded-lg p-3 border border-gray-600/30">
               <div className="flex-1 min-w-0">
                 <p
-                  className={`text-green-400 font-mono truncate ${
-                    compact ? "text-xs" : "text-sm"
-                  }`}
+                  className={`text-green-400 font-mono truncate ${compact ? "text-xs" : "text-sm"
+                    }`}
                 >
                   {referralUrl}
                 </p>
               </div>
               <button
                 onClick={handleCopyLink}
-                className={`flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-lg transition-all font-medium ${
-                  compact ? "text-xs" : "text-sm"
-                }`}
+                className={`flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-lg transition-all font-medium ${compact ? "text-xs" : "text-sm"
+                  }`}
               >
                 {copied ? <CheckCircle size={16} /> : <Copy size={16} />}
                 {copied ? "Copied!" : "Copy"}
@@ -175,22 +167,19 @@ const Contact = ({
           {/* Social Share Buttons */}
           <div>
             <h3
-              className={`font-medium text-gray-300 mb-4 ${
-                compact ? "text-xs" : "text-sm"
-              }`}
+              className={`font-medium text-gray-300 mb-4 ${compact ? "text-xs" : "text-sm"
+                }`}
             >
               Share on Social Media
             </h3>
             <div
-              className={`grid gap-3 ${
-                compact ? "grid-cols-2" : "grid-cols-2 md:grid-cols-4"
-              }`}
+              className={`grid gap-3 ${compact ? "grid-cols-2" : "grid-cols-2 md:grid-cols-4"
+                }`}
             >
               <button
                 onClick={() => handleShare("facebook")}
-                className={`flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 rounded-xl transition-all group ${
-                  compact ? "p-3" : "p-4"
-                }`}
+                className={`flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 rounded-xl transition-all group ${compact ? "p-3" : "p-4"
+                  }`}
               >
                 <Facebook size={compact ? 16 : 20} />
                 <span
@@ -202,9 +191,8 @@ const Contact = ({
 
               <button
                 onClick={() => handleShare("twitter")}
-                className={`flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 rounded-xl transition-all group ${
-                  compact ? "p-3" : "p-4"
-                }`}
+                className={`flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 rounded-xl transition-all group ${compact ? "p-3" : "p-4"
+                  }`}
               >
                 <Twitter size={compact ? 16 : 20} />
                 <span
@@ -216,9 +204,8 @@ const Contact = ({
 
               <button
                 onClick={() => handleShare("whatsapp")}
-                className={`flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 rounded-xl transition-all group ${
-                  compact ? "p-3" : "p-4"
-                }`}
+                className={`flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 rounded-xl transition-all group ${compact ? "p-3" : "p-4"
+                  }`}
               >
                 <MessageCircle size={compact ? 16 : 20} />
                 <span
@@ -230,9 +217,8 @@ const Contact = ({
 
               <button
                 onClick={() => handleShare("telegram")}
-                className={`flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 rounded-xl transition-all group ${
-                  compact ? "p-3" : "p-4"
-                }`}
+                className={`flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 rounded-xl transition-all group ${compact ? "p-3" : "p-4"
+                  }`}
               >
                 <Send size={compact ? 16 : 20} />
                 <span
@@ -247,9 +233,8 @@ const Contact = ({
           {/* Native Share Button */}
           <button
             onClick={handleWebShare}
-            className={`w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl transition-all font-medium ${
-              compact ? "p-3 text-sm" : "p-4"
-            }`}
+            className={`w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl transition-all font-medium ${compact ? "p-3 text-sm" : "p-4"
+              }`}
           >
             <Share2 size={compact ? 16 : 20} />
             Share Link
@@ -258,18 +243,16 @@ const Contact = ({
           {/* Earning Tips */}
           <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-xl p-4">
             <h4
-              className={`text-yellow-400 font-medium mb-2 ${
-                compact ? "text-sm" : "text-base"
-              }`}
+              className={`text-yellow-400 font-medium mb-2 ${compact ? "text-sm" : "text-base"
+                }`}
             >
               💡 Terms and Conditions
             </h4>
             <ul
-              className={`text-gray-300 space-y-1 ${
-                compact ? "text-xs" : "text-sm"
-              }`}
+              className={`text-gray-300 space-y-1 ${compact ? "text-xs" : "text-sm"
+                }`}
             >
-              <li>• Minimum Deposit/Investment Amount = 20 Dollar</li>
+              <li>• Minimum Deposit/Investment Amount = 11 Dollar</li>
               <li>• Minimum Withdraw/Earning Amount = 10 Dollar</li>
               <li>
                 • On Every Withdraw - 10% of your withdrawal amount will be
@@ -295,9 +278,8 @@ const Contact = ({
             >
               <Power size={16} />
               <span
-                className={`text-green-400 font-medium ${
-                  compact ? "text-sm" : "text-lg"
-                }`}
+                className={`text-green-400 font-medium ${compact ? "text-sm" : "text-lg"
+                  }`}
               >
                 Logout
               </span>
@@ -307,21 +289,18 @@ const Contact = ({
         {/* Footer */}
         {showTitle && (
           <div
-            className={`pt-6 border-t border-gray-700/50 text-center ${
-              compact ? "mt-6" : "mt-8"
-            }`}
+            className={`pt-6 border-t border-gray-700/50 text-center ${compact ? "mt-6" : "mt-8"
+              }`}
           >
             <p
-              className={`text-gray-500 mb-2 ${
-                compact ? "text-xs" : "text-xs"
-              }`}
+              className={`text-gray-500 mb-2 ${compact ? "text-xs" : "text-xs"
+                }`}
             >
               © ERA Global 2025. All Rights Reserved.
             </p>
             <div
-              className={`flex justify-center items-center gap-4 ${
-                compact ? "text-xs" : "text-xs"
-              }`}
+              className={`flex justify-center items-center gap-4 ${compact ? "text-xs" : "text-xs"
+                }`}
             >
               <button className="text-red-400 hover:text-red-300 transition-colors">
                 Privacy Policy

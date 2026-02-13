@@ -1,7 +1,7 @@
 const UserDialog = ({ open, onClose, user }) => {
     if (!open || !user) return null
 
-    console.log(user)
+    // console.log(user)
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">

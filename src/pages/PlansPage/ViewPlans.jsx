@@ -13,12 +13,14 @@ import PageTwo from "./PageTwo";
 import Referral from "./Referral";
 import Terms from "./Terms";
 import ThankPage from "./ThankPage";
+import PageAboutMD from "./PageAboutMd";
 
 const ViewPlans = () => {
   return (
     <div>
       <PageOne />
       <PageThree />
+      <PageAboutMD />
       <PageFour />
       <PageFive />
       <PageSix />

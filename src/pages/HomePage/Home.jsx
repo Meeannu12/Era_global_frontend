@@ -29,7 +29,9 @@ import {
   getTaskClaim,
   getWalletDetails,
 } from "../../apis/userServices";
-// import mainImage from "../../assets/main_image.jpg";
+import slider01 from "../../assets/slider01.png";
+import slider02 from "../../assets/slider02.png";
+import growth_road_map from "../../assets/growth_road_map.png";
 // import CountdownBanner from "../../components/CountdownBanner";
 
 const Home = () => {
@@ -137,20 +139,21 @@ const Home = () => {
 
   const carouselImages = [
     {
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
+      // image:
+      //   "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
+      image: slider01,
       type: "image",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
+      image: slider02,
+      // "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
       type: "image",
     },
-    {
-      image:
-        "https://images.unsplash.com/photo-1553484771-371a605b060b?w=800&h=400&fit=crop",
-      type: "image",
-    },
+    // {
+    //   image:
+    //     "https://images.unsplash.com/photo-1553484771-371a605b060b?w=800&h=400&fit=crop",
+    //   type: "image",
+    // },
   ];
 
   // console.log("::", user);
@@ -369,10 +372,10 @@ const Home = () => {
       // ✅ Custom validation check
       if (!isValidAmount(amount)) {
         if (user.walletDeposit < 5) {
-          toast.error("Please Enter more than 14 and also divisible by 5.");
+          toast.error("Please Enter more than 10.");
           return; // Stop function here
         } else {
-          toast.error("Please Enter more than 20 and also divisible by 10.");
+          toast.error("Please Enter more than 10");
           return; // Stop function here
         }
       }
@@ -411,7 +414,7 @@ const Home = () => {
 
   // check enter amount by user is grater then 19 and multipal of 10
   function isValidAmount(amount) {
-    return amount > 14 && amount % 5 === 0;
+    return amount > 10; //&& amount % 5 === 0;
   }
 
   const handleChange = (e) => {
@@ -419,7 +422,8 @@ const Home = () => {
     setEditForm((prev) => ({ ...prev, amount: e.target.value }));
 
     if (value && !isValidAmount(Number(value))) {
-      setError("Please Enter more than 20 and also divisible by 10.");
+      setError("Please Enter more than 10 ")
+      //and also divisible by 10.");
     } else {
       setError("");
     }
@@ -451,6 +455,7 @@ const Home = () => {
           View Our Plans
         </Link>
       </div>
+
       <header className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700">
         <div className="flex justify-between items-center px-4 py-4">
           <div className="flex justify-between items-center h-4">
@@ -586,13 +591,17 @@ const Home = () => {
                   <img
                     src={img.image}
                     alt={`Slide ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    // width={800}
+                    // height={400}
+                    className="w-full h-full object-fit-cover"
                   />
                 )}
                 <img
                   src={img}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  // width={800}
+                  // height={400}
+                  className="w-full h-full object-fit-cover"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -871,6 +880,20 @@ const Home = () => {
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+
+      {/* Growth - Road MAP */}
+      <div className="px-4 mb-20">
+        <div className="max-w-6xl mx-auto">
+
+
+
+          <img src={growth_road_map}
+            alt="carousel"
+          />
+
         </div>
       </div>
 
@@ -1156,8 +1179,8 @@ const Home = () => {
                   // }
                   placeholder={
                     user?.walletDeposit > 5
-                      ? "Enter amount Greater than 19"
-                      : "Enter amount Greater than 14"
+                      ? "Enter amount Greater than 10"
+                      : "Enter amount Greater than 10"
                   }
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
@@ -1179,7 +1202,7 @@ const Home = () => {
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 transition-colors"
                 />
                 <span className="text-sm text-red-700">
-                  # Minimum 20 Dollar Deposit/investment{" "}
+                  # Minimum 11 Dollar Deposit/investment{" "}
                 </span>
               </div>
 
