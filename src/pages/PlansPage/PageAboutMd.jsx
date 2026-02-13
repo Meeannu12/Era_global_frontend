@@ -59,7 +59,7 @@ const PageThree = () => {
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
                         <MapPinned className="w-4 h-4 text-blue-400" />
                         <span className="text-blue-400 text-sm font-medium">
-                            About Address
+                            OUR LOCATION
                         </span>
                     </div>
                     <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-4">
