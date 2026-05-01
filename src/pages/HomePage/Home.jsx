@@ -491,10 +491,10 @@ const Home = () => {
           <div className="flex items-center gap-2">
             {!user.pin ? (
               <button
-                onClick={openPinModal}
+                // onClick={openPinModal}
                 className="bg-red-500/20 text-red-400 px-4 py-2 rounded-full text-sm font-medium border border-red-500/30 hover:bg-red-500/30 transition-all"
               >
-                ACTIVATE PIN
+                INACTIVATE
               </button>
             ) : (
               <div className="flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400">
@@ -506,33 +506,33 @@ const Home = () => {
       </header>
 
       {/* PIN Activation Modal */}
-      {showPinModal && (
+      {/* {showPinModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-2xl p-6 w-full max-w-md relative">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-2xl p-6 w-full max-w-md relative"> */}
             {/* Close Button */}
-            <button
+            {/* <button
               onClick={closePinModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
               disabled={isLoading}
             >
               <X size={20} />
-            </button>
+            </button> */}
 
             {/* Modal Header */}
-            <div className="text-center mb-6">
+            {/* <div className="text-center mb-6"> */}
               {/* <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Plus className="text-green-400" size={32} />
               </div> */}
-              <h2 className="text-2xl font-bold text-white mb-2">
+              {/* <h2 className="text-2xl font-bold text-white mb-2">
                 Activate Your Account
               </h2>
               <p className="text-gray-400">
                 Enter your activation PIN to start earning
               </p>
-            </div>
+            </div> */}
 
             {/* PIN Input */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Activation PIN
               </label>
@@ -544,10 +544,10 @@ const Home = () => {
                 className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                 disabled={isLoading}
               />
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3">
               <button
                 onClick={closePinModal}
                 className="flex-1 px-4 py-3 bg-gray-600/50 text-gray-300 rounded-lg hover:bg-gray-600/70 transition-all disabled:opacity-50"
@@ -572,7 +572,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Carousel Section */}
       <div className="relative px-4 py-6">
@@ -643,7 +643,7 @@ const Home = () => {
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* Activate Card */}
           <div
-            onClick={!user.pin ? openPinModal : undefined}
+            // onClick={!user.pin ? openPinModal : undefined}
             className={`bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-2xl p-4 backdrop-blur-sm hover:scale-105 transition-transform ${!user.pin ? "cursor-pointer" : "cursor-default opacity-50"
               }`}
           >
