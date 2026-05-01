@@ -31,6 +31,7 @@ import {
 } from "../../apis/userServices";
 import slider01 from "../../assets/slider01.png";
 import slider02 from "../../assets/slider02.png";
+import slider03 from "../../assets/slider03.jpeg";
 import growth_road_map from "../../assets/growth_road_map.png";
 // import CountdownBanner from "../../components/CountdownBanner";
 
@@ -138,6 +139,10 @@ const Home = () => {
   });
 
   const carouselImages = [
+    {
+      image: slider03,
+      type: "image",
+    },
     {
       // image:
       //   "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
