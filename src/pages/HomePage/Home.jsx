@@ -103,7 +103,7 @@ const Home = () => {
 
   const handleClick = async () => {
     const data = {
-      // walletClaim: 0.22,
+      // walletClaim: 0.33,
       setClaimTime: Date.now(), // ✅ yahan timestamp save kar
     };
     try {
