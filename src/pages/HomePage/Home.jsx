@@ -135,7 +135,7 @@ const Home = () => {
     amount: "",
     walletType: "",
     transaction: "",
-    receive: "0xb9EDA4F6f890D914AEE8D2326E67a713646f763E",
+    receive: "0x13Ddf8b2dB0d47dB90930363b98Ce579211bb8E6",
   });
 
   const carouselImages = [
